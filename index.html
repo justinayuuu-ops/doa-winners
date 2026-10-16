@@ -86,18 +86,17 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
 .dow{font-size:11px;font-weight:400;text-align:center;color:var(--muted);padding-bottom:4px}
 .dow.sat{color:var(--pitch)}
-.dow.sun,.day.sun .n:not(.on) i{color:var(--kit)}
-.day{position:relative;border:0;background:transparent;border-radius:12px;min-height:50px;padding:5px 0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dow.sun,.day.sun .n i{color:var(--kit)}
+.day{position:relative;border:0;background:transparent;border-radius:12px;min-height:58px;padding:4px 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px}
 /* 날짜 숫자: 원 안 정중앙 — 글자 상하 여백을 잘라 숫자 몸통 기준으로 가운데 맞춤 */
-.day .n{position:relative;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;font-size:15px;line-height:1;font-variant-numeric:tabular-nums}
+.day .n{position:relative;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;font-size:15px;line-height:1;font-variant-numeric:tabular-nums}
 .day .n i{position:relative;z-index:1;font-style:normal;display:block;line-height:1;text-box:trim-both cap alphabetic}
 @supports not (text-box:trim-both cap alphabetic){.day .n i{transform:translateY(.07em)}}
-.day .n .bwrap{position:absolute;inset:0}
-.day .n .bwrap{inset:4px}
-.day .n.on i{color:#121C27;font-size:13px;text-shadow:0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #fff}
-.day .n.off .bwrap{opacity:.75}
-.day.today .n{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--navy)}
-.day.today .n:not(.on) i{color:var(--navy)}
+.day.today .n{background:var(--navy)}
+.day.today .n i{color:var(--on-navy)!important}
+.day .mark{display:block;width:22px;height:22px;flex:none}
+.day .mark .ball{filter:drop-shadow(0 1px 1px rgba(18,40,70,.25))}
+
 .day .more{position:absolute;top:2px;right:3px;font-size:10px;color:var(--muted);font-style:normal}
 .bwrap{display:block;color:var(--c)}
 .bwrap .ball{display:block;width:100%;height:100%}
@@ -105,7 +104,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .bwrap.lg{width:16px;height:16px;flex:none}
 .day.other{opacity:.35}
 .day.sel{background:var(--pitch-soft);box-shadow:inset 0 0 0 2px var(--pitch)}
-.day.sel .n:not(.on) i{color:var(--pitch)}
+.day.sel .n i{color:var(--pitch)}
 .dayhead{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px));padding:4px 6px;margin-inline:-6px}
 .dayhead.flash{animation:fl 1s ease-out}
 @keyframes fl{from{background:var(--pitch-soft)}to{background:transparent}}
@@ -298,7 +297,7 @@ input,select,textarea{font-size:16px}
 const TEAM={name:"수지위너스",full:"수지 위너스 풋볼아카데미",className:"유치부 (7세)",addr:"경기도 용인시 수지구 상현동 수지로 18-2",tel:"031-897-6550",mobile:"010-5787-6550",hours:"방문 13:00~20:00 · 일요일·공휴일 휴무",site:"https://sujiwinnersfootball.com/sub",blog:"https://blog.naver.com/ckdrbs74",cafe:"https://cafe.naver.com/sujiwinnersfootball"};
 const TYPES={class:'정규 수업',match:'대회·시합',event:'행사',off:'전체 휴강',personal:'개인'};
 const TEAM_TYPES=['class','match','off'];
-const BALL='<svg class="ball" viewBox="0 0 40 40" aria-hidden="true"><defs><clipPath id="bc"><circle cx="20" cy="20" r="18"/></clipPath></defs><circle cx="20" cy="20" r="18" fill="#fff"/><g clip-path="url(#bc)"><path d="M20.00 13.88L25.82 18.11L23.60 24.95L16.40 24.95L14.18 18.11ZM20.00 7.40L13.84 2.92L16.19 -4.32L23.81 -4.32L26.16 2.92ZM31.98 16.11L34.34 8.86L41.96 8.86L44.31 16.11L38.15 20.58ZM27.41 30.19L35.02 30.19L37.38 37.44L31.21 41.92L25.05 37.44ZM12.59 30.19L14.95 37.44L8.79 41.92L2.62 37.44L4.98 30.19ZM8.02 16.11L1.85 20.58L-4.31 16.11L-1.96 8.86L5.66 8.86Z" fill="currentColor"/><path d="M20.00 13.88L20.00 7.40M25.82 18.11L31.98 16.11M23.60 24.95L27.41 30.19M16.40 24.95L12.59 30.19M14.18 18.11L8.02 16.11M26.16 2.92L34.34 8.86M38.15 20.58L35.02 30.19M25.05 37.44L14.95 37.44M4.98 30.19L1.85 20.58M5.66 8.86L13.84 2.92" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></g><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
+const BALL='<svg class="ball" viewBox="0 0 40 40" aria-hidden="true"><defs><clipPath id="bc"><circle cx="20" cy="20" r="17.6"/></clipPath></defs><circle cx="20" cy="20" r="17.6" fill="#fff"/><g clip-path="url(#bc)"><path d="M20.00 14.02L25.69 18.15L23.52 24.84L16.48 24.84L14.31 18.15ZM20.00 7.68L13.97 3.30L16.28 -3.78L23.72 -3.78L26.03 3.30ZM31.72 16.19L34.02 9.11L41.47 9.11L43.77 16.19L37.74 20.57ZM27.24 29.97L34.69 29.97L36.99 37.05L30.97 41.43L24.94 37.05ZM12.76 29.97L15.06 37.05L9.03 41.43L3.01 37.05L5.31 29.97ZM8.28 16.19L2.26 20.57L-3.77 16.19L-1.47 9.11L5.98 9.11Z" fill="currentColor"/><path d="M20.00 14.02L20.00 7.68M25.69 18.15L31.72 16.19M23.52 24.84L27.24 29.97M16.48 24.84L12.76 29.97M14.31 18.15L8.28 16.19M26.03 3.30L34.02 9.11M37.74 20.57L34.69 29.97M24.94 37.05L15.06 37.05M5.31 29.97L2.26 20.57M5.98 9.11L13.97 3.30" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/></g><circle cx="20" cy="20" r="17.6" fill="none" stroke="currentColor" stroke-width="2.1"/></svg>';
 const ballCls=o=>{const t=o.e.type;return (t==='personal'?'personal':t==='match'||t==='event'?'match':'class')+(o.cancel||t==='off'?' gray':'')};
 const ROLES={admin:'관리자',director:'감독',coach:'코치',parent:'부모님',player:'선수'};
 const ASSIGNABLE=['director','coach','parent','player'];
@@ -648,8 +647,8 @@ function viewCal(){
     const d=new Date(start);d.setDate(start.getDate()+i);const s=ds(d);const evs=eventsOn(s);
     const live=evs.filter(o=>!o.cancel&&o.e.type!=='off');
     const pri=live.find(o=>o.e.type==='match'||o.e.type==='event')||live.find(o=>o.e.type==='class')||live[0]||evs.find(o=>o.e.type!=='personal')||evs[0];
-    const ball=pri?`<span class="bwrap t-${ballCls(pri)}">${BALL}</span>`:'';
-    g+=`<button class="day ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n ${pri?'on':''} ${pri&&!live.length?'off':''}">${ball}<i>${d.getDate()}</i></span>${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
+    const ball=pri?`<span class="mark bwrap t-${ballCls(pri)}">${BALL}</span>`:'';
+    g+=`<button class="day ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n"><i>${d.getDate()}</i></span>${ball||'<span class="mark"></span>'}${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
   }
   const dayEv=eventsOn(V.sel);
   const un=unreadCount();
