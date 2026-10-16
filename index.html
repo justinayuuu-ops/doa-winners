@@ -240,7 +240,13 @@ header.top .brand{flex:1;min-width:0;display:flex;align-items:center;height:44px
 header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .role-slot{flex:none;display:flex;align-items:center}
 @media (max-width:360px){.bell{position:relative;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink);margin-right:6px}
-.bell svg{width:20px;height:20px}
+.bell{position:relative;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);display:grid;place-items:center;margin-right:8px;padding:0;transition:background .2s,border-color .2s}
+.bell svg{width:20px;height:20px;display:block}
+.bell.hot{background:var(--lime);border-color:var(--lime);color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--lime) 35%,transparent)}
+.bell.hot svg{animation:wig 1.6s ease-in-out infinite}
+@keyframes wig{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-12deg)}85%{transform:rotate(10deg)}92%{transform:rotate(-5deg)}}
+@media (prefers-reduced-motion: reduce){.bell.hot svg{animation:none}}
+.badge{border:2px solid var(--surface)}
 .badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--kit);color:var(--on-navy);font-size:11px;font-weight:400;display:grid;place-items:center}
 .nbanner{width:100%;border:0;border-radius:14px;background:var(--kit-soft);color:var(--kit);font-weight:400;padding:12px 14px;text-align:left;margin-bottom:10px}
 .scope{margin:0 0 10px;font-size:13px;color:var(--muted)}
@@ -441,6 +447,7 @@ function relLabel(l){const p=l&&PL.find(x=>x.id===l.playerId);if(!p)return '';re
 function childName(){const l=myLink();if(l){const p=PL.find(x=>x.id===l.playerId);if(p)return p.name}return ''}
 
 /* ================= groups · visibility · notices · RSVP ================= */
+const JOIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9.5" cy="8" r="3.6"/><path d="M3 20c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/><path d="M19 8v6M16 11h6"/></svg>';
 const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
 const RS={yes:'참석',no:'불참',maybe:'미정'};
 const KIND={new:'새 일정',update:'일정 안내',change:'일정 변경',cancel:'휴강 안내'};
@@ -475,7 +482,7 @@ function myNotices(){
   return NT.filter(n=>{const gs=n.groupIds||[];return !gs.length||gs.some(g=>mine.includes(g))}).sort((a,b)=>String(b.sentAt).localeCompare(String(a.sentAt)));
 }
 function unreadCount(){const seen=L.seen||{};return myNotices().filter(n=>!seen[n.id]&&n.date>=addDays(TODAY,-1)).length}
-function bellBtn(){if(isAdmin()&&dbState==='ready'){const n=pendingUsers().length;return `<button class="bell" id="apOpen" aria-label="가입 승인 요청 ${n}명">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}if(canManage()||dbState!=='ready')return '';const n=unreadCount();return `<button class="bell" id="bell" aria-label="알림 ${n}개">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}
+function bellBtn(){if(isAdmin()&&dbState==='ready'){const n=pendingUsers().length;return `<button class="bell ${n?'hot':''}" id="apOpen" aria-label="가입 신청 ${n}명" title="가입 신청">${JOIN}${n>1?`<span class="badge">${n}</span>`:''}</button>`}if(canManage()||dbState!=='ready')return '';const n=unreadCount();return `<button class="bell ${n?'hot':''}" id="bell" aria-label="알림 ${n}개">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}
 function playerCard(p,child){
   const fam=familyOf(p.id).filter(id=>{const l=linkOf(id);return l&&l.relation!=='선수 본인'});
   return `<button class="player ${child&&p.name===child?'mine':''}" ${canManage()?`data-pedit="${h(p.id)}"`:'disabled'}><span class="num">${h(p.number||'–')}</span><div><strong>${h(p.name)}</strong><small>${fam.length?'가족 '+fam.length+'명 연결':'가족 미연결'}</small></div></button>`;
