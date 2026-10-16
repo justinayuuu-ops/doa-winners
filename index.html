@@ -312,14 +312,22 @@ const RELS=['엄마','아빠','보호자','선수 본인'];
 let role='none', roleAuto=false;
 const canManage=()=>role==='admin'||role==='director'||role==='coach';
 const isAdmin=()=>role==='admin';
-function resolveRole(){const u=MB.find(x=>x.id===ME.id);role=u&&ROLES[u.role]?u.role:'none';ME.name=u?u.name||'':''}
+const approved=u=>!!u&&(u.role==='admin'||!u.status||u.status==='approved');
+function resolveRole(){const u=MB.find(x=>x.id===ME.id);ME.name=u?u.name||'':'';
+  if(!u||!ROLES[u.role]){role='none';return}
+  role=u.status==='pending'?'pending':u.status==='rejected'?'rejected':u.role}
+const pendingUsers=()=>MB.filter(u=>u.status==='pending').sort((a,b)=>String(a.at).localeCompare(String(b.at)));
 loadPersonal();
 
 /* ================= team store: Firebase Realtime Database (REST + EventSource, same as 오늘도 도아 킥) ================= */
 const QS=new URLSearchParams(location.search);
 let INVITE=(QS.get('invite')||'').toUpperCase();
 function otherDb(){for(const k of ['doa-balltouch-v1:sync','doa-math-v1:sync']){try{const o=JSON.parse(localStorage.getItem(k)||'null');if(o&&o.db)return o.db}catch(e){}}return ''}
-let SYNC=(()=>{const q=QS.get('db');if(q){const c={db:q.replace(/\/+$/,''),room:QS.get('team')||'suji-winners'};lsSet(APPKEY+':sync',c);return c}const o=lsGet(APPKEY+':sync',null);return o&&o.db?o:null})();
+/* 앱 기본 저장소 — 수지위너스 전용 Firebase 실시간 데이터베이스 */
+const DEFAULT_SYNC={db:'https://doa-winners-10163533-default-rtdb.asia-southeast1.firebasedatabase.app',room:'suji-winners'};
+let SYNC=(()=>{const q=QS.get('db');if(q&&q.replace(/\/+$/,'')!==DEFAULT_SYNC.db){const c={db:q.replace(/\/+$/,''),room:QS.get('team')||'suji-winners'};lsSet(APPKEY+':sync',c);return c}
+  if(q){try{localStorage.removeItem(APPKEY+':sync')}catch(e){}}
+  const o=lsGet(APPKEY+':sync',null);return o&&o.db&&o.db!==DEFAULT_SYNC.db&&QS.get('custom')?o:DEFAULT_SYNC})();
 if(QS.get('db')){try{history.replaceState(null,'',location.pathname+(INVITE?'?invite='+INVITE:''))}catch(e){}}
 let TREE={},es=null,pollT=null;
 const base=()=>SYNC.db+'/'+encodeURIComponent(SYNC.room);
@@ -445,7 +453,7 @@ function canSee(e){
   const mine=myGroups(); return gs.some(g=>mine.includes(g));
 }
 function playersIn(ids){return PL.filter(p=>!ids||!ids.length||(p.groupIds||[]).some(g=>ids.includes(g)))}
-function familyOf(pid){const ids=new Set(MB.concat(PR).map(x=>x.id));return [...ids].filter(id=>{const l=linkOf(id);return l&&l.playerId===pid})}
+function familyOf(pid){const ids=new Set(MB.filter(approved).map(x=>x.id));return [...ids].filter(id=>{const l=linkOf(id);return l&&l.playerId===pid})}
 function familyCount(gids){let n=0;playersIn(gids).forEach(p=>n+=familyOf(p.id).length);return n}
 const occKey=(id,date)=>id+'@'+date;
 function myRsvp(key){const r=RV.find(x=>x.id===ME.id);return r&&r.answers&&r.answers[key]}
@@ -459,7 +467,7 @@ function myNotices(){
   return NT.filter(n=>{const gs=n.groupIds||[];return !gs.length||gs.some(g=>mine.includes(g))}).sort((a,b)=>String(b.sentAt).localeCompare(String(a.sentAt)));
 }
 function unreadCount(){const seen=L.seen||{};return myNotices().filter(n=>!seen[n.id]&&n.date>=addDays(TODAY,-1)).length}
-function bellBtn(){if(canManage()||dbState!=='ready')return '';const n=unreadCount();return `<button class="bell" id="bell" aria-label="알림 ${n}개">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}
+function bellBtn(){if(isAdmin()&&dbState==='ready'){const n=pendingUsers().length;return `<button class="bell" id="apOpen" aria-label="가입 승인 요청 ${n}명">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}if(canManage()||dbState!=='ready')return '';const n=unreadCount();return `<button class="bell" id="bell" aria-label="알림 ${n}개">${BELL}${n?`<span class="badge">${n}</span>`:''}</button>`}
 function playerCard(p,child){
   const fam=familyOf(p.id).filter(id=>{const l=linkOf(id);return l&&l.relation!=='선수 본인'});
   return `<button class="player ${child&&p.name===child?'mine':''}" ${canManage()?`data-pedit="${h(p.id)}"`:'disabled'}><span class="num">${h(p.number||'–')}</span><div><strong>${h(p.name)}</strong><small>${fam.length?'가족 '+fam.length+'명 연결':'가족 미연결'}</small></div></button>`;
@@ -500,6 +508,13 @@ function audienceHtml(e,o){
   }
   return html+'</div>';
 }
+function approvalRows(){
+  const ps=pendingUsers();
+  if(!ps.length) return '<div class="empty-box">기다리는 가입 신청이 없어요</div>';
+  return `<div class="list">${ps.map(u=>{const l=linkOf(u.id);return `<div class="card" style="margin-top:0"><div class="member" style="border:0;padding:0"><div class="nm"><strong>${h(u.name||'이름 없음')}</strong><small>${ROLES[u.role]}${l&&relLabel(l)?' · '+h(relLabel(l)):' · 아이 미선택'} · ${h(new Date(u.at).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}))}</small></div></div>
+    <div class="actions"><button class="btn danger" data-aprej="${h(u.id)}">거절</button><button class="btn primary" data-apok="${h(u.id)}">승인</button></div></div>`}).join('')}</div>`;
+}
+function approvalsHtml(){return `<div class="sheet-head"><h2>가입 승인</h2><button class="iconbtn" data-close aria-label="닫기">✕</button></div><p class="hint">부모님·선수가 가입하면 여기로 와요. 승인해야 앱을 볼 수 있어요. 초대 링크로 들어온 사람은 바로 열려요.</p>${approvalRows()}`}
 function inboxHtml(){
   const ns=myNotices().slice(0,40),seen=L.seen||{};
   return `<div class="sheet-head"><h2>알림</h2><button class="iconbtn" data-close aria-label="닫기">✕</button></div>
@@ -538,6 +553,9 @@ function gateHtml(){
   if(dbState==='denied') return `<div class="card gate"><h2>저장소가 잠겨 있어요</h2><p>Firebase 데이터베이스 규칙이 읽기·쓰기를 막고 있어요. Firebase 콘솔 → Realtime Database → 규칙에서 이 팀 경로를 열어주세요.</p><div class="actions"><button class="btn" id="syncReset">주소 다시 입력</button><button class="btn primary" id="syncRetry">다시 시도</button></div></div>`;
   if(dbState==='offline') return `<div class="card gate"><h2>연결이 안 돼요</h2><p>인터넷 연결을 확인해 주세요.</p><div class="actions"><button class="btn" id="syncReset">주소 다시 입력</button><button class="btn primary" id="syncRetry">다시 시도</button></div></div>`;
   // signed-up check
+  const myU=MB.find(x=>x.id===ME.id);
+  if(myU&&myU.status==='pending'){const l=linkOf(ME.id);return `<div class="card gate"><h2>승인을 기다리고 있어요</h2><p><b>${h(myU.name)}</b>님의 가입 신청(${ROLES[myU.role]}${l&&relLabel(l)?' · '+h(relLabel(l)):''})이 관리자에게 전달됐어요. 관리자가 승인하면 이 화면이 바로 열려요.</p><p class="hint">앱을 닫았다가 다시 열어도 돼요.</p><div class="actions"><button class="btn" id="apCancel">신청 취소하고 다시 쓰기</button></div></div>`}
+  if(myU&&myU.status==='rejected') return `<div class="card gate"><h2>가입이 승인되지 않았어요</h2><p>관리자에게 확인해 주세요. 정보를 고쳐서 다시 신청할 수 있어요.</p><div class="actions"><button class="btn primary wide" id="apCancel">다시 신청하기</button></div></div>`;
   if(!META||!META.adminId) return `<div class="card gate"><h2>처음 오셨네요</h2><p>이 팀의 첫 사용자라서 <b>관리자</b>로 등록돼요. 관리자는 감독·코치를 초대하고, 감독·코치는 선수와 부모님을 등록해요.</p>
     <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 도아 아빠 정OO"></div>
     <div class="actions"><button class="btn primary wide" id="obAdmin">관리자로 시작하기</button></div></div>`;
@@ -547,12 +565,12 @@ function gateHtml(){
     return `<div class="card gate"><h2>초대받으셨어요</h2><p><b>${ROLES[inv.role]}</b>${p?' · '+h(p.name)+(inv.relation&&inv.relation!=='선수 본인'?' '+h(inv.relation):''):''}(으)로 등록돼요.</p>
     <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 김OO 코치"></div>
     <div class="actions"><button class="btn" id="obCodeClear">초대 없이 가입</button><button class="btn primary" id="obJoin">등록하기</button></div></div>`}
-  return `<div class="card gate"><h2>수지위너스 캘린더에 오신 걸 환영해요</h2><p>부모님 또는 선수로 등록해 주세요. 감독·코치님은 관리자에게 받은 초대 링크로 들어오면 돼요.</p>
+  return `<div class="card gate"><h2>수지위너스 캘린더에 오신 걸 환영해요</h2><p>부모님 또는 선수로 가입 신청을 해주세요. 관리자가 승인하면 일정이 열려요. 감독·코치님은 받은 초대 링크로 들어오면 바로 열려요.</p>
     <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 도아 엄마 김OO"></div>
     <div class="field"><span class="lbl">나는</span><div class="gpick"><label><input type="radio" name="ob-role" id="ob-role-parent" value="parent" checked><span>부모님</span></label><label><input type="radio" name="ob-role" id="ob-role-player" value="player"><span>선수</span></label></div></div>
     ${players.length?`<div class="row"><div class="field"><label for="ob-player">우리 아이 (선수)</label><select id="ob-player"><option value="">나중에 선택</option>${players.map(p=>`<option value="${h(p.id)}">${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
       <div class="field"><label for="ob-rel">관계 (부모님)</label><select id="ob-rel">${RELS.filter(r=>r!=='선수 본인').map(r=>`<option>${r}</option>`).join('')}</select></div></div>`:'<p class="hint">아직 선수 명단이 없어요. 등록 후 내 정보에서 아이를 고를 수 있어요.</p>'}
-    <div class="actions"><button class="btn primary wide" id="obJoin">등록하기</button></div>
+    <div class="actions"><button class="btn primary wide" id="obJoin">가입 신청</button></div>
     <details class="more"><summary>초대 코드가 있어요</summary><div class="inline"><div class="field"><label for="ob-code">초대 코드</label><input id="ob-code" autocapitalize="characters" placeholder="예: K3F9QZ"></div><button class="btn" id="obCode">확인</button></div></details>
     <details class="more"><summary>다른 기기에서 쓰던 계정이 있어요</summary><div class="inline"><div class="field"><label for="ob-restore">계정 코드</label><input id="ob-restore" autocapitalize="off" placeholder="내 정보 화면의 계정 코드"></div><button class="btn" id="obRestore">불러오기</button></div></details>
   </div>`;
@@ -562,7 +580,7 @@ function render(){
   const rp=role!=='none'&&dbState==='ready'?`${bellBtn()}<span class="pill role-${role}">${ROLES[role]}</span>`:'';
   const head=`<header class="top"><div class="crest" role="img" aria-label="수지 위너스 풋볼아카데미 엠블럼"></div>
       <div class="brand"><h1>수지<span class="w">위너스</span> 캘린더</h1></div><span class="role-slot">${rp}</span></header>`;
-  if(dbState!=='ready'||role==='none'){app.innerHTML=`<div class="wrap">${head}${gateHtml()}</div>${V.sheet&&V.sheet.kind==='copy'?sheetHtml():''}`;return}
+  if(dbState!=='ready'||role==='none'||role==='pending'||role==='rejected'){app.innerHTML=`<div class="wrap">${head}${gateHtml()}</div>${V.sheet&&V.sheet.kind==='copy'?sheetHtml():''}`;return}
   let body='';
   if(V.tab==='cal')body=viewCal();else if(V.tab==='list')body=viewList();else if(V.tab==='team')body=viewTeam();else body=viewMe();
   app.innerHTML=`<div class="wrap">${head}${body}</div>
@@ -620,7 +638,8 @@ function viewCal(){
   }
   const dayEv=eventsOn(V.sel);
   const un=unreadCount();
-  const banner=!canManage()&&un?`<button class="nbanner" id="bell2">새 알림 ${un}개 · 참여 여부를 알려주세요</button>`:'';
+  const pu=isAdmin()?pendingUsers().length:0;
+  const banner=(pu?`<button class="nbanner" id="apOpen">가입 승인 요청 ${pu}명 · 확인해 주세요</button>`:'')+(!canManage()&&un?`<button class="nbanner" id="bell2">새 알림 ${un}개 · 참여 여부를 알려주세요</button>`:'');
   const scope=isAdmin()||dbState!=='ready'?'':canManage()?(staffGroups(meU()).length?`<p class="scope">담당 반 · ${h(groupsLabel(staffGroups(meU())))} 일정만 보여요</p>`:`<div class="notice" style="margin:0 0 10px">아직 담당 반이 없어요. 관리자가 담당 반을 정해주면 그 반 일정이 보여요. 지금은 전체 팀 일정만 보여요.</div>`):(myPlayer()?`<p class="scope">${h(myPlayer().name)} · ${h(groupsLabel(myGroups()))} 일정만 보여요</p>`:`<div class="notice" style="margin:0 0 10px">'내 정보'에서 우리 아이를 연결하면 아이 그룹의 일정이 보여요. 지금은 전체 팀 일정만 보여요.</div>`);
   const chips='';
   return `${banner}${scope}${chips}${nextCard()}
@@ -651,9 +670,9 @@ function viewTeam(){
   const child=childName();
   let mbHtml='';
   if(canManage()){
-    const users=MB.slice().sort((a,b)=>(RANK[a.role]??9)-(RANK[b.role]??9)||String(a.name).localeCompare(String(b.name)));
+    const users=MB.filter(approved).slice().sort((a,b)=>(RANK[a.role]??9)-(RANK[b.role]??9)||String(a.name).localeCompare(String(b.name)));
     const c=V.mb.confirm,cu=c&&MB.find(x=>x.id===c.id);
-    mbHtml=`<div class="section-title"><span>멤버 · 권한 <span class="hint">${users.length}명</span></span><button class="btn sm" id="joinCopy">가입 링크 복사</button></div>
+    mbHtml=(isAdmin()&&pendingUsers().length?`<div class="section-title"><span>가입 승인 대기 <span class="hint">${pendingUsers().length}명</span></span></div>${approvalRows()}`:'')+`<div class="section-title"><span>멤버 · 권한 <span class="hint">${users.length}명</span></span><button class="btn sm" id="joinCopy">가입 링크 복사</button></div>
     <div class="card">
       ${users.map(u=>`<div class="member"><div class="nm"><strong>${h(u.name||'이름 없음')}${u.id===ME.id?' (나)':''}</strong><small>${(()=>{if(u.role==='director'||u.role==='coach'){const g=staffGroups(u);return '담당 반: '+(g.length?h(groupsLabel(g)):'없음')}const l=linkOf(u.id);return l&&relLabel(l)?h(relLabel(l)):(u.role==='parent'||u.role==='player'?'아이 미연결':'')})()}</small>
         ${isAdmin()&&(u.role==='director'||u.role==='coach')&&GR.length?`<div class="gpick" style="margin-top:6px">${sortedGroups().map(g=>`<label><input type="checkbox" id="mg-${h(u.id)}-${h(g.id)}" data-mgrp="${h(u.id)}" value="${h(g.id)}" ${staffGroups(u).includes(g.id)?'checked':''}><span>${h(g.name)}</span></label>`).join('')}</div>`:''}</div>
@@ -721,6 +740,7 @@ function sheetHtml(){
   else if(s.kind==='player')inner=playerHtml(s);
   else if(s.kind==='group')inner=groupHtml(s);
   else if(s.kind==='inbox')inner=inboxHtml();
+  else if(s.kind==='approvals')inner=approvalsHtml();
   else if(s.kind==='copy')inner=`<div class="sheet-head"><h2>카톡 공지</h2><button class="iconbtn" data-close aria-label="닫기">✕</button></div><p class="hint">자동 복사가 안 돼서 글을 선택해 두었어요. 길게 눌러 복사해 주세요.</p><textarea class="copybox" id="copyBox" readonly>${h(s.text)}</textarea>`;
   return `<div class="overlay" id="overlay"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${inner}</div></div>`;
 }
@@ -973,12 +993,12 @@ document.addEventListener('click',async ev=>{
     const name=val('ob-name');if(!name){toast('이름을 넣어주세요');return}
     const code=(V.ob.code||INVITE||'').toUpperCase();const inv=code&&INV.find(x=>x.id===code);const now2=new Date().toISOString();
     let data;
-    if(inv) data={name,role:inv.role,groupIds:arr(inv.groupIds),playerId:inv.playerId||'',relation:inv.relation||'',invitedBy:inv.by||'',at:now2};
+    if(inv) data={name,role:inv.role,status:'approved',groupIds:arr(inv.groupIds),playerId:inv.playerId||'',relation:inv.relation||'',invitedBy:inv.by||'',at:now2};
     else{const r=(document.querySelector('input[name="ob-role"]:checked')||{}).value==='player'?'player':'parent';
-      data={name,role:r,playerId:val('ob-player')||'',relation:r==='player'?'선수 본인':(val('ob-rel')||'엄마'),at:now2}}
+      data={name,role:r,status:'pending',playerId:val('ob-player')||'',relation:r==='player'?'선수 본인':(val('ob-rel')||'엄마'),at:now2}}
     const patch={};patch['users/'+ME.id]=data;if(inv)patch['invites/'+code]=null;
     INVITE='';V.ob.code='';
-    run(()=>dbPatch(patch),name+'님, '+ROLES[data.role]+'(으)로 등록했어요');return}
+    run(()=>dbPatch(patch),data.status==='pending'?'가입 신청을 보냈어요. 관리자가 승인하면 열려요':name+'님, '+ROLES[data.role]+'(으)로 등록했어요');return}
   if(t.id==='obRestore'){const c=(val('ob-restore')||'').trim();if(!MB.find(x=>x.id===c)){toast('그 계정 코드를 찾을 수 없어요');return}
     lsSet(APPKEY+':me',c);ME.id=c;loadPersonal();resolveRole();render();toast('계정을 불러왔어요');return}
   if(t.id==='lkSave'){const me=MB.find(x=>x.id===ME.id);if(!me)return;
@@ -1000,6 +1020,10 @@ document.addEventListener('click',async ev=>{
   if(t.id==='idCopy'){if(!(await copyText(ME.id,'내 계정 코드를 복사했어요')))toast('계정 코드: '+ME.id);return}
   if(t.dataset.madmin){V.mb.confirm={kind:'admin',id:t.dataset.madmin};render();return}
   if(t.dataset.mdel){V.mb.confirm={kind:'del',id:t.dataset.mdel};render();return}
+  if(t.id==='apOpen'){V.sheet={kind:'approvals'};render();return}
+  if(t.dataset.apok){if(!isAdmin())return;const id=t.dataset.apok;const u=MB.find(x=>x.id===id);run(()=>dbPut('users/'+id+'/status','approved'),(u&&u.name||'')+'님을 승인했어요');return}
+  if(t.dataset.aprej){if(!isAdmin())return;const id=t.dataset.aprej;const u=MB.find(x=>x.id===id);run(()=>dbPut('users/'+id+'/status','rejected'),(u&&u.name||'')+'님의 신청을 거절했어요');return}
+  if(t.id==='apCancel'){run(()=>dbDel('members',ME.id),'처음 화면으로 돌아왔어요');return}
   if(t.id==='mcNo'){V.mb.confirm=null;render();return}
   if(t.id==='mcYes'){const c=V.mb.confirm;V.mb.confirm=null;if(!isAdmin()||!c)return;
     if(c.kind==='del') run(()=>dbDel('members',c.id),'멤버를 삭제했어요');
