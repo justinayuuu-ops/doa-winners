@@ -1,13 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#12558A">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
-<meta name="claude:viewport-fit-sides" content="cover"><title>수지위너스 캘린더</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gothic+A1:wght@400;500;700;800&display=swap"><style id="css">
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="위너스 캘린더">
+<title>수지위너스 캘린더</title>
+<style>
+/* 글씨체: 주아 하나만 쓴다 (오늘도 도아 킥과 같은 설정). 주아에 없는 글자만 카카오 작은글씨가 대신 그린다. */
+@font-face{font-family:"Jua";src:url("./Jua-Korean.woff2") format("woff2"),url("https://cdn.jsdelivr.net/npm/@fontsource/jua@5/files/jua-korean-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Regular.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Bold.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Bold.woff2") format("woff2");font-weight:600 700;font-style:normal;font-display:swap}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{background:#EEF2F7}
+body{margin:0}
+img{max-width:100%}[hidden]{display:none!important}
+</style>
+<style id="css">
 /* CI: Suji Winners emblem navy + sky blue + laurel lime. Layout: one-column phone app. Sticky team header, month grid card, bottom tab bar, bottom sheets for detail & edit. */
 :root{
   --bg:#EEF2F7; --surface:#FFFFFF; --ink:#121C27; --muted:#5A6878; --line:#D5DEE8;
@@ -15,8 +27,9 @@
   --gold:#B97800; --gold-soft:#FBEFD3; --off:#7A8590; --off-soft:#E6EAF0;
   --navy:#12558A; --on-navy:#FFFFFF; --lime:#D2EC2C;
   --shadow:0 6px 24px rgba(18,40,70,.10);
-  --f-display:"Jua","Gothic A1",system-ui,sans-serif;
-  --f-body:"Gothic A1",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --f-round:"Jua","Kakao Small Sans",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,"Malgun Gothic",sans-serif;
+  --f-display:var(--f-round);
+  --f-body:var(--f-round);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0C121A; --surface:#151E29; --ink:#E5ECF4; --muted:#93A2B3; --line:#263342;
@@ -31,7 +44,7 @@
   --navy:#124A78; --on-navy:#FFFFFF; --lime:#D7F03A;
   --shadow:0 6px 24px rgba(0,0,0,.4); color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-text-size-adjust:100%;font-size:15px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--pitch);outline-offset:2px}
@@ -46,9 +59,9 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .brand{min-width:0;flex:1}
 .brand h1{margin:0;font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:.01em;line-height:1.1}
 .brand p{margin:2px 0 0;font-size:12px;color:var(--muted)}
-.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--pitch-soft);color:var(--pitch);white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:400;padding:3px 8px;border-radius:999px;background:var(--pitch-soft);color:var(--pitch);white-space:nowrap}
 .pill.ro{background:var(--off-soft);color:var(--off)}
-.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:var(--off-soft);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:400;background:var(--off-soft);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn.primary{background:var(--pitch);color:var(--on-navy)}
 .btn.danger{background:var(--kit-soft);color:var(--kit)}
 .btn.sm{padding:6px 10px;font-size:13px;border-radius:10px}
@@ -59,7 +72,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .next::before{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border:2px solid var(--lime);opacity:.25;border-radius:50%}
 .next::after{content:"";position:absolute;right:40px;top:0;bottom:0;border-left:2px solid var(--on-navy);opacity:.15}
 .next .dd{font-family:var(--f-display);font-size:40px;line-height:1;color:var(--lime)}
-.next h2{margin:8px 0 4px;font-size:19px;font-weight:700;text-wrap:balance;position:relative;z-index:1}
+.next h2{margin:8px 0 4px;font-size:19px;font-weight:400;text-wrap:balance;position:relative;z-index:1}
 .next .meta{font-size:13px;opacity:.85;position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:4px 12px}
 .next button{position:relative;z-index:1;margin-top:12px;background:var(--on-navy);color:var(--navy)}
 .next.empty .dd{color:var(--on-navy);font-size:22px}
@@ -68,11 +81,11 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .cal-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:20px;font-variant-numeric:tabular-nums}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;font-size:18px;line-height:1;flex:none}
 .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
-.dow{font-size:11px;font-weight:700;text-align:center;color:var(--muted);padding-bottom:4px}
+.dow{font-size:11px;font-weight:400;text-align:center;color:var(--muted);padding-bottom:4px}
 .dow.sun,.day.sun .n{color:var(--kit)}
 .dow.sat{color:var(--pitch)}
 .day{border:0;background:transparent;border-radius:12px;min-height:52px;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:3px}
-.day .n{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;width:26px;height:26px;display:grid;place-items:center;border-radius:50%}
+.day .n{font-size:14px;font-weight:400;font-variant-numeric:tabular-nums;width:26px;height:26px;display:grid;place-items:center;border-radius:50%}
 .day.other{opacity:.35}
 .day.today .n{background:var(--navy);color:var(--on-navy)}
 .day.sel{background:var(--pitch-soft)}
@@ -94,11 +107,11 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .ev .body strong{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ev .body span{font-size:12.5px;color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ev.cancel .body strong{text-decoration:line-through;color:var(--muted)}
-.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--cs);color:var(--c);white-space:nowrap}
+.chip{font-size:11px;font-weight:400;padding:3px 8px;border-radius:999px;background:var(--cs);color:var(--c);white-space:nowrap}
 .empty-box{background:var(--surface);border:1.5px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:10px;align-items:center}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:6px calc(6px + env(safe-area-inset-bottom,0px))}
 nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 64px 1fr 1fr;align-items:center}
-nav.tabs button.tab{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--muted);padding:6px 0}
+nav.tabs button.tab{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:400;color:var(--muted);padding:6px 0}
 nav.tabs button.tab svg{width:22px;height:22px}
 nav.tabs button.tab[aria-current="page"]{color:var(--pitch)}
 .fab{width:54px;height:54px;border-radius:50%;border:0;background:var(--pitch);color:var(--on-navy);font-size:28px;line-height:1;justify-self:center;margin-top:-26px;box-shadow:var(--shadow)}
@@ -111,16 +124,16 @@ nav.tabs button.tab[aria-current="page"]{color:var(--pitch)}
 .sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .sheet h2{margin:6px 0 2px;font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1.2;text-wrap:balance}
 .card{background:var(--surface);border-radius:16px;padding:14px;margin-top:10px}
-.card h4{margin:0 0 8px;font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.card h4{margin:0 0 8px;font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:400}
 .kv{display:grid;grid-template-columns:64px minmax(0,1fr);gap:6px 10px;font-size:14px;margin:0}
 .kv dt{color:var(--muted);font-size:13px}
 .kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .times{display:grid;gap:8px;margin-top:12px}
 .times div{background:var(--surface);border-radius:14px;padding:10px;text-align:center}
-.times small{display:block;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+.times small{display:block;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.04em}
 .times b{font-family:var(--f-display);font-weight:400;font-size:22px;font-variant-numeric:tabular-nums}
 .links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.links a{font-size:13px;font-weight:700;color:var(--pitch);text-decoration:none;background:var(--pitch-soft);padding:6px 10px;border-radius:10px}
+.links a{font-size:13px;font-weight:400;color:var(--pitch);text-decoration:none;background:var(--pitch-soft);padding:6px 10px;border-radius:10px}
 .check{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:14.5px}
 .check:last-of-type{border-bottom:0}
 .check input{width:20px;height:20px;accent-color:var(--pitch);flex:none}
@@ -129,22 +142,22 @@ nav.tabs button.tab[aria-current="page"]{color:var(--pitch)}
 .bar i{display:block;height:100%;background:var(--pitch);border-radius:3px}
 .duty{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
 .duty:last-child{border-bottom:0}
-.duty .role{font-size:12px;font-weight:700;background:var(--gold-soft);color:var(--gold);padding:3px 8px;border-radius:8px;flex:none}
-.duty .who{font-weight:700}
+.duty .role{font-size:12px;font-weight:400;background:var(--gold-soft);color:var(--gold);padding:3px 8px;border-radius:8px;flex:none}
+.duty .who{font-weight:400}
 .duty small{color:var(--muted);display:block;font-size:12.5px}
 .duty.mine{background:var(--kit-soft);margin:0 -14px;padding:8px 14px}
 .duty.mine .who::after{content:" · 우리 아이";color:var(--kit);font-size:12px}
 .mt{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 .mt td{padding:8px 4px;border-bottom:1px solid var(--line)}
 .mt tr:last-child td{border-bottom:0}
-.mt .tm{font-weight:700;width:52px}
+.mt .tm{font-weight:400;width:52px}
 .mt .fd{color:var(--muted);font-size:12.5px;width:76px}
-.mt .sc{text-align:right;font-weight:700;color:var(--pitch)}
+.mt .sc{text-align:right;font-weight:400;color:var(--pitch)}
 .notes{white-space:pre-wrap;font-size:14px;overflow-wrap:anywhere}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .actions .wide{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:4px;margin-top:10px;min-width:0}
-.field label,.field .lbl{font-size:12px;font-weight:700;color:var(--muted)}
+.field label,.field .lbl{font-size:12px;font-weight:400;color:var(--muted)}
 .field input,.field select,.field textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
 .field textarea{resize:vertical;min-height:70px}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0 8px}
@@ -155,7 +168,7 @@ nav.tabs button.tab[aria-current="page"]{color:var(--pitch)}
 .types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .types label{display:block;position:relative}
 .types input{position:absolute;opacity:0;pointer-events:none}
-.types span{display:block;text-align:center;font-size:13px;font-weight:700;padding:9px 0;border-radius:10px;background:var(--surface);border:1.5px solid var(--line);color:var(--muted)}
+.types span{display:block;text-align:center;font-size:13px;font-weight:400;padding:9px 0;border-radius:10px;background:var(--surface);border:1.5px solid var(--line);color:var(--muted)}
 .types input:checked + span{background:var(--cs);border-color:var(--c);color:var(--c)}
 .types input:focus-visible + span{outline:2px solid var(--pitch)}
 .confirm{background:var(--kit-soft);border-radius:14px;padding:12px;margin-top:10px;font-size:14px}
@@ -194,9 +207,9 @@ nav.tabs button.tab[aria-current="page"]{color:var(--pitch)}
 .perm{width:100%;border-collapse:collapse;font-size:13px}
 .perm th,.perm td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:center}
 .perm th:first-child,.perm td:first-child{text-align:left}
-.perm thead th{color:var(--muted);font-size:11.5px;font-weight:700}
-.perm .y{color:var(--pitch);font-weight:700}
-.perm .p{color:var(--violet);font-weight:700}
+.perm thead th{color:var(--muted);font-size:11.5px;font-weight:400}
+.perm .y{color:var(--pitch);font-weight:400}
+.perm .p{color:var(--violet);font-weight:400}
 .perm .n{color:var(--muted)}
 .perm tr.me td{background:var(--pitch-soft)}
 .hits{display:flex;flex-direction:column;gap:6px;margin-top:8px}
@@ -209,14 +222,14 @@ header.top .brand{flex:1;min-width:0;display:flex;align-items:center;height:44px
 header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .role-slot{flex:none;display:flex;align-items:center}
 .day{position:relative}
-.day.has .n{font-weight:700}
+.day.has .n{font-weight:400}
 @media (max-width:360px){.bell{position:relative;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink);margin-right:6px}
 .bell svg{width:20px;height:20px}
-.badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--kit);color:var(--on-navy);font-size:11px;font-weight:800;display:grid;place-items:center}
-.nbanner{width:100%;border:0;border-radius:14px;background:var(--kit-soft);color:var(--kit);font-weight:800;padding:12px 14px;text-align:left;margin-bottom:10px}
+.badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--kit);color:var(--on-navy);font-size:11px;font-weight:400;display:grid;place-items:center}
+.nbanner{width:100%;border:0;border-radius:14px;background:var(--kit-soft);color:var(--kit);font-weight:400;padding:12px 14px;text-align:left;margin-bottom:10px}
 .scope{margin:0 0 10px;font-size:13px;color:var(--muted)}
 .gchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:2px}
-.gchip{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--muted)}
+.gchip{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:400;color:var(--muted)}
 .gchip[aria-pressed="true"]{border-color:var(--pitch);background:var(--pitch-soft);color:var(--pitch)}
 .gcard{background:var(--surface);border-radius:18px;padding:12px;margin-top:10px}
 .gcard .roster .player{background:var(--bg)}
@@ -226,28 +239,40 @@ header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .gpick{display:flex;flex-wrap:wrap;gap:6px}
 .gpick label{position:relative}
 .gpick input{position:absolute;opacity:0;pointer-events:none}
-.gpick span{display:block;padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-size:13px;font-weight:700;color:var(--muted)}
+.gpick span{display:block;padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-size:13px;font-weight:400;color:var(--muted)}
 .gpick input:checked + span{border-color:var(--pitch);background:var(--pitch-soft);color:var(--pitch)}
 .gpick input:focus-visible + span{outline:2px solid var(--pitch)}
 .rsvp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.rsvp button{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 0;font-weight:800;color:var(--muted)}
+.rsvp button{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 0;font-weight:400;color:var(--muted)}
 .rsvp button[aria-pressed="true"].r-yes{background:var(--pitch-soft);border-color:var(--pitch);color:var(--pitch)}
 .rsvp button[aria-pressed="true"].r-no{background:var(--kit-soft);border-color:var(--kit);color:var(--kit)}
 .rsvp button[aria-pressed="true"].r-maybe{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
 .rsum{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.rsum span{font-size:12px;font-weight:800;padding:4px 9px;border-radius:999px;background:var(--off-soft)}
+.rsum span{font-size:12px;font-weight:400;padding:4px 9px;border-radius:999px;background:var(--off-soft)}
 .rsum .r-yes,.rrow .r-yes{color:var(--pitch)} .rsum .r-no,.rrow .r-no{color:var(--kit)} .rsum .r-maybe,.rrow .r-maybe{color:var(--gold)} .rsum .r-none,.rrow .r-none{color:var(--muted)}
 .rlist{display:flex;flex-direction:column}
 .rrow{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
 .rrow:last-child{border-bottom:0}
 .ev.unread{box-shadow:inset 3px 0 0 var(--kit),0 1px 0 var(--line)}
-.mark{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:5px 8px;font-weight:800;font-size:13px}
+.mark{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:5px 8px;font-weight:400;font-size:13px}
 .mark.r-yes{color:var(--pitch);border-color:var(--pitch)} .mark.r-no{color:var(--kit);border-color:var(--kit)} .mark.r-maybe{color:var(--gold);border-color:var(--gold)} .mark.r-none{color:var(--muted)}
 .rrow{align-items:center}
 .staffbox{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .staffbox h4{margin:0 0 6px}
-.lockline{font-size:12px;color:var(--violet);font-weight:700}
-</style><div id="app"></div><script>
+.lockline{font-size:12px;color:var(--violet);font-weight:400}
+
+.gate{margin-top:14px;padding:18px}
+.gate h2{font-family:var(--f-display);font-weight:400;font-size:21px;margin:0 0 6px}
+.gate p{margin:0 0 6px;font-size:14.5px}
+details.more{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+details.more summary{cursor:pointer;color:var(--muted);font-size:13.5px}
+input,select,textarea{font-size:16px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+
 (function(){
 "use strict";
 /* ================= constants ================= */
@@ -272,87 +297,69 @@ function loadPersonal(){PERSONAL=lsGet(pKey(),[])}
 function savePersonal(){lsSet(pKey(),PERSONAL)}
 
 /* ================= state ================= */
+const APPKEY='doa-winners-v1';
 let db=null, U=null, dbState='loading';
-const ME={id:null,name:'',owner:false,canWrite:null,ready:false};
-let EV=[],PL=[],MB=[],PR=[],GR=[],NT=[],RV=[]; const loaded={events:false,players:false,members:false,profiles:false,groups:false,notices:false,rsvp:false};
+function myDeviceId(){let id=lsGet(APPKEY+':me',null);if(!id){id='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);lsSet(APPKEY+':me',id)}return id}
+const ME={id:myDeviceId(),name:'',ready:true};
+let EV=[],PL=[],MB=[],PR=[],GR=[],NT=[],RV=[],INV=[];const loaded={events:false,players:false,members:false,profiles:true,groups:false,notices:false,rsvp:false};
+let META=null;
 const RELS=['엄마','아빠','보호자','선수 본인'];
-let role='parent', roleAuto=true;
+let role='none', roleAuto=false;
 const canManage=()=>role==='admin'||role==='director'||role==='coach';
 const isAdmin=()=>role==='admin';
-function resolveRole(){
-  if(ME.owner){role='admin';roleAuto=false;return}
-  const m=ME.id&&MB.find(x=>x.id===ME.id);
-  if(m&&ROLES[m.role]&&m.role!=='admin'){role=m.role;roleAuto=false;return}
-  roleAuto=true; role=ME.canWrite===true?'coach':'parent';
-}
+function resolveRole(){const u=MB.find(x=>x.id===ME.id);role=u&&ROLES[u.role]?u.role:'none';ME.name=u?u.name||'':''}
+loadPersonal();
 
-/* ================= capability wiring ================= */
-function docsOf(snap){
-  let arr=Array.isArray(snap)?snap:(snap&&(snap.docs||snap.items||snap.documents||snap.results))||[];
-  if(!Array.isArray(arr)&&typeof arr==='object') arr=Object.values(arr);
-  return arr.map(d=>{let data=typeof d.data==='function'?d.data():(d.data!==undefined?d.data:d);data=data||{};return Object.assign({},data,{id:d.id||data.id})}).filter(x=>x.id);
+/* ================= team store: Firebase Realtime Database (REST + EventSource, same as 오늘도 도아 킥) ================= */
+const QS=new URLSearchParams(location.search);
+let INVITE=(QS.get('invite')||'').toUpperCase();
+function otherDb(){for(const k of ['doa-balltouch-v1:sync','doa-math-v1:sync']){try{const o=JSON.parse(localStorage.getItem(k)||'null');if(o&&o.db)return o.db}catch(e){}}return ''}
+let SYNC=(()=>{const q=QS.get('db');if(q){const c={db:q.replace(/\/+$/,''),room:QS.get('team')||'suji-winners'};lsSet(APPKEY+':sync',c);return c}const o=lsGet(APPKEY+':sync',null);return o&&o.db?o:null})();
+if(QS.get('db')){try{history.replaceState(null,'',location.pathname+(INVITE?'?invite='+INVITE:''))}catch(e){}}
+let TREE={},es=null,pollT=null;
+const base=()=>SYNC.db+'/'+encodeURIComponent(SYNC.room);
+function setAt(obj,parts,v){if(!parts.length)return v;obj=(obj&&typeof obj==='object')?obj:{};const k=parts[0];const nv=setAt(obj[k],parts.slice(1),v);if(nv===null||nv===undefined)delete obj[k];else obj[k]=nv;return obj}
+const arr=v=>Array.isArray(v)?v.filter(x=>x!=null):(v&&typeof v==='object'?Object.values(v):[]);
+const toArr=o=>o&&typeof o==='object'?Object.keys(o).map(k=>Object.assign({},o[k],{id:k})):[];
+function syncFromTree(){
+  META=TREE.meta||null;EV=toArr(TREE.events);PL=toArr(TREE.players);MB=toArr(TREE.users);GR=toArr(TREE.groups);NT=toArr(TREE.notices);RV=toArr(TREE.rsvp);INV=toArr(TREE.invites);
+  EV.forEach(e=>{['items','duties','matches','groupIds'].forEach(k=>{e[k]=arr(e[k])});e.exceptions=e.exceptions||{}});
+  PL.forEach(p=>{p.groupIds=arr(p.groupIds)});NT.forEach(n=>{n.groupIds=arr(n.groupIds)});
+  for(const k in loaded)loaded[k]=true;
+  dbState='ready';resolveRole();renderBg();
 }
-function subscribe(path,cb){
-  const col=db.collection(path);
-  const handle=s=>{try{cb(docsOf(s))}catch(e){console.error(e)}};
-  try{ if(typeof col.onSnapshot==='function'){ col.onSnapshot(handle,err=>{console.warn(path,err);cb(null)}); return } }catch(e){console.warn(e)}
-  const poll=()=>Promise.resolve(col.get()).then(handle).catch(()=>cb(null));
-  poll(); setInterval(poll,30000);
+function onStream(type,e){try{const m=JSON.parse(e.data);if(!m)return;const parts=String(m.path||'/').split('/').filter(Boolean);
+  if(type==='put')TREE=setAt(TREE,parts,m.data)||{};else for(const k in (m.data||{}))TREE=setAt(TREE,parts.concat(k.split('/').filter(Boolean)),m.data[k])||{};
+  syncFromTree()}catch(x){console.warn(x)}}
+function connect(){
+  if(!SYNC){dbState='setup';render();return}
+  db=true;dbState='loading';render();
+  try{es&&es.close()}catch(e){}
+  if(pollT){clearInterval(pollT);pollT=null}
+  if(window.EventSource){
+    es=new EventSource(base()+'.json');
+    es.addEventListener('put',e=>onStream('put',e));
+    es.addEventListener('patch',e=>onStream('patch',e));
+    es.addEventListener('cancel',()=>{dbState='denied';render()});
+    es.onerror=()=>{if(dbState!=='ready'){try{es.close()}catch(x){}startPoll()}};
+  }else startPoll();
 }
-const cl=window.claude;
-if(cl&&typeof cl.use==='function'){
-  cl.use('user').then(async u=>{
-    U=u;
-    if(u){
-      try{ME.owner=!!(await u.isOwner())}catch(e){}
-      try{ME.id=await u.id()}catch(e){}
-      try{const m=await u.me();ME.name=(m&&m.name)||''}catch(e){}
-      try{const c=await u.canEdit();ME.canWrite=c}catch(e){}
-    }
-    ME.ready=true; loadPersonal(); resolveRole(); renderBg();
-  }).catch(()=>{ME.ready=true;loadPersonal();renderBg()});
-  cl.use('db').then(d=>{
-    if(!d){dbState='off';loadStatic();return}
-    db=d; dbState='ready';
-    subscribe('events',a=>{if(a)EV=a;loaded.events=true;renderBg()});
-    subscribe('players',a=>{if(a)PL=a;loaded.players=true;renderBg()});
-    subscribe('members',a=>{if(a)MB=a;loaded.members=true;resolveRole();renderBg()});
-    subscribe('profiles',a=>{if(a)PR=a;loaded.profiles=true;renderBg()});
-    subscribe('groups',a=>{if(a)GR=a;loaded.groups=true;renderBg()});
-    subscribe('notices',a=>{if(a)NT=a;loaded.notices=true;renderBg()});
-    subscribe('rsvp',a=>{if(a)RV=a;loaded.rsvp=true;renderBg()});
-  }).catch(()=>{dbState='off';loadStatic()});
-}else{dbState='off';ME.ready=true;loadPersonal();loadStatic()}
-/* outside claude.ai (e.g. GitHub Pages): read-only team events from events.json */
-function loadStatic(){
-  fetch('events.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(a=>{
-    EV=(Array.isArray(a)?a:[]).filter(x=>x&&x.id);loaded.events=true;dbState='static';renderBg();
-  }).catch(()=>renderBg());
-}
-
-const colArr=p=>({events:EV,players:PL,profiles:PR,members:MB,groups:GR,notices:NT,rsvp:RV})[p];
+function startPoll(){if(pollT)return;const p=()=>fetch(base()+'.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw r.status;return r.json()}).then(d=>{TREE=d||{};syncFromTree()}).catch(err=>{if(dbState!=='ready'){dbState=(err===401||err===403)?'denied':'offline';render()}});p();pollT=setInterval(p,15000)}
 function clean(o){const c=JSON.parse(JSON.stringify(o));delete c.id;return c}
-async function dbSet(path,id,data){
-  if(!db) throw {code:'offline'};
-  await db.collection(path).doc(id).set(clean(data));
-  const arr=colArr(path);
-  const i=arr.findIndex(x=>x.id===id); const v=Object.assign({},data,{id});
-  if(i>=0)arr[i]=v;else arr.push(v);
-}
-async function dbDel(path,id){
-  if(!db) throw {code:'offline'};
-  await db.collection(path).doc(id).delete();
-  const arr=colArr(path);
-  const i=arr.findIndex(x=>x.id===id); if(i>=0)arr.splice(i,1);
-}
+async function rt(method,path,body){if(!SYNC)throw {code:'offline'};const r=await fetch(base()+(path?'/'+path:'')+'.json',{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok)throw {code:(r.status===401||r.status===403)?'denied':'http'+r.status};return null}
+const colKey=p=>p==='members'?'users':p;
+async function dbSet(path,id,data){const k=colKey(path),v=clean(data);await rt('PUT',k+'/'+id,v);TREE=setAt(TREE,[k,id],v)||{};syncFromTree()}
+async function dbDel(path,id){const k=colKey(path);await rt('DELETE',k+'/'+id);TREE=setAt(TREE,[k,id],null)||{};syncFromTree()}
+async function dbPut(path,v){await rt('PUT',path,v);TREE=setAt(TREE,path.split('/').filter(Boolean),v)||{};syncFromTree()}
+async function dbPatch(obj){await rt('PATCH','',obj);for(const k in obj)TREE=setAt(TREE,k.split('/').filter(Boolean),obj[k]===null?null:JSON.parse(JSON.stringify(obj[k])))||{};syncFromTree()}
 function writeErr(e){
   const c=e&&e.code;
-  if(c==='offline') toast('팀 일정 저장소에 연결되지 않았어요. claude.ai에 로그인한 상태로 열어주세요');
-  else if(/denied|permission|not_granted|forbidden|unauth/i.test(String(c||e&&e.message))) toast('저장 권한이 없어요. 관리자에게 공유 권한을 확인해 달라고 해주세요');
-  else toast('저장하지 못했어요. 잠시 후 다시 시도해 주세요');
+  if(c==='offline')toast('팀 저장소가 연결되지 않았어요');
+  else if(c==='denied')toast('저장소 규칙이 쓰기를 막고 있어요. 관리자에게 알려주세요');
+  else toast('저장하지 못했어요. 인터넷 연결을 확인해 주세요');
 }
 let busy=false;
-async function run(fn,ok){ if(busy)return; busy=true; try{await fn(); if(ok)toast(ok)}catch(e){console.warn(e);writeErr(e)} finally{busy=false;render()} }
+async function run(fn,ok){if(busy)return;busy=true;try{await fn();if(ok)toast(ok)}catch(e){console.warn(e);writeErr(e)}finally{busy=false;render()}}
 const newId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 
 /* ================= dates ================= */
@@ -393,14 +400,9 @@ function findOcc(id,date,orig){return eventsOn(date).find(o=>o.e.id===id&&(!orig
 
 /* ================= view state ================= */
 const now=new Date();
-let V={y:now.getFullYear(),m:now.getMonth(),sel:TODAY,tab:L.tab||'cal',sheet:null,mb:{q:'',hits:[],pick:null,role:'parent',player:''}};
-let NAMES={};
-async function resolveNames(ids){
-  if(!U||!ids.length) return;
-  const need=ids.filter(i=>!(i in NAMES)); if(!need.length) return;
-  try{const ps=await U.profiles(need); need.forEach(i=>{const p=ps&&(ps[i]||(ps.get&&ps.get(i)));NAMES[i]=(p&&p.name)||''}); renderBg()}catch(e){need.forEach(i=>NAMES[i]='')}
-}
-const nameOf=id=>id===ME.id?(ME.name||'나'):(NAMES[id]||'이름 확인 중');
+let V={y:now.getFullYear(),m:now.getMonth(),sel:TODAY,tab:L.tab||'cal',sheet:null,mb:{confirm:null},ob:{code:''}};
+function resolveNames(){}
+const nameOf=id=>{const u=MB.find(x=>x.id===id);return (u&&u.name)||(id===ME.id?'나':'이름 없음')};
 
 /* ================= utils ================= */
 const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -412,18 +414,10 @@ const svg={
   ball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/><path d="M12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10L3.5 8.5"/></svg>',
   me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'
 };
-/* who is my child: admin-set member link > my own saved link > local name */
-function linkOf(id){
-  const m=MB.find(x=>x.id===id); if(m&&m.playerId) return {playerId:m.playerId,relation:m.relation||'',by:'admin'};
-  const r=PR.find(x=>x.id===id); if(r&&r.playerId) return {playerId:r.playerId,relation:r.relation||'',by:'self'};
-  return null;
-}
-function myLink(){return (ME.id&&linkOf(ME.id))||(L.link&&L.link.playerId?Object.assign({by:'local'},L.link):null)}
+function linkOf(id){const u=MB.find(x=>x.id===id);return u&&u.playerId?{playerId:u.playerId,relation:u.relation||'',by:'self'}:null}
+function myLink(){return linkOf(ME.id)}
 function relLabel(l){const p=l&&PL.find(x=>x.id===l.playerId);if(!p)return '';return l.relation==='선수 본인'?p.name+' 선수 본인':p.name+(l.relation?' '+l.relation:' 가족')}
-function childName(){
-  const l=myLink(); if(l){const p=PL.find(x=>x.id===l.playerId);if(p)return p.name}
-  return L.child||'';
-}
+function childName(){const l=myLink();if(l){const p=PL.find(x=>x.id===l.playerId);if(p)return p.name}return ''}
 
 /* ================= groups · visibility · notices · RSVP ================= */
 const BELL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
@@ -525,18 +519,45 @@ function renderBg(){
   if(act){const el=document.getElementById(act);if(el)el.focus()}
   const sh2=document.querySelector('.sheet');if(sh2)sh2.scrollTop=st;
 }
+function gateHtml(){
+  if(dbState==='setup') return `<div class="card gate"><h2>팀 저장소 연결</h2>
+    <p>코치님·부모님이 같은 일정을 보려면 Firebase 실시간 데이터베이스 주소가 필요해요. 오늘도 도아 킥에서 쓰던 주소를 그대로 써도 돼요.</p>
+    <div class="field"><label for="sy-db">데이터베이스 주소</label><input id="sy-db" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://....firebasedatabase.app" value="${h(otherDb())}"></div>
+    <div class="field"><label for="sy-room">팀 이름 (영문·숫자)</label><input id="sy-room" autocapitalize="off" value="suji-winners"></div>
+    ${otherDb()?'<p class="hint">다른 도아 앱에서 쓰던 주소를 채워 뒀어요. 연결만 누르면 돼요.</p>':''}
+    <div class="actions"><button class="btn primary wide" id="syncSave">연결</button></div></div>`;
+  if(dbState==='loading') return '<div class="loading">팀 정보를 불러오는 중이에요</div>';
+  if(dbState==='denied') return `<div class="card gate"><h2>저장소가 잠겨 있어요</h2><p>Firebase 데이터베이스 규칙이 읽기·쓰기를 막고 있어요. Firebase 콘솔 → Realtime Database → 규칙에서 이 팀 경로를 열어주세요.</p><div class="actions"><button class="btn" id="syncReset">주소 다시 입력</button><button class="btn primary" id="syncRetry">다시 시도</button></div></div>`;
+  if(dbState==='offline') return `<div class="card gate"><h2>연결이 안 돼요</h2><p>인터넷 연결을 확인해 주세요.</p><div class="actions"><button class="btn" id="syncReset">주소 다시 입력</button><button class="btn primary" id="syncRetry">다시 시도</button></div></div>`;
+  // signed-up check
+  if(!META||!META.adminId) return `<div class="card gate"><h2>처음 오셨네요</h2><p>이 팀의 첫 사용자라서 <b>관리자</b>로 등록돼요. 관리자는 감독·코치를 초대하고, 감독·코치는 선수와 부모님을 등록해요.</p>
+    <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 도아 아빠 정OO"></div>
+    <div class="actions"><button class="btn primary wide" id="obAdmin">관리자로 시작하기</button></div></div>`;
+  const code=(V.ob.code||INVITE||'').toUpperCase();const inv=code&&INV.find(x=>x.id===code);
+  const players=PL.slice().sort(byNum);
+  if(inv){const p=inv.playerId&&PL.find(x=>x.id===inv.playerId);
+    return `<div class="card gate"><h2>초대받으셨어요</h2><p><b>${ROLES[inv.role]}</b>${p?' · '+h(p.name)+(inv.relation&&inv.relation!=='선수 본인'?' '+h(inv.relation):''):''}(으)로 등록돼요.</p>
+    <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 김OO 코치"></div>
+    <div class="actions"><button class="btn" id="obCodeClear">초대 없이 가입</button><button class="btn primary" id="obJoin">등록하기</button></div></div>`}
+  return `<div class="card gate"><h2>수지위너스 캘린더에 오신 걸 환영해요</h2><p>부모님 또는 선수로 등록해 주세요. 감독·코치님은 관리자에게 받은 초대 링크로 들어오면 돼요.</p>
+    <div class="field"><label for="ob-name">내 이름</label><input id="ob-name" placeholder="예: 도아 엄마 김OO"></div>
+    <div class="field"><span class="lbl">나는</span><div class="gpick"><label><input type="radio" name="ob-role" id="ob-role-parent" value="parent" checked><span>부모님</span></label><label><input type="radio" name="ob-role" id="ob-role-player" value="player"><span>선수</span></label></div></div>
+    ${players.length?`<div class="row"><div class="field"><label for="ob-player">우리 아이 (선수)</label><select id="ob-player"><option value="">나중에 선택</option>${players.map(p=>`<option value="${h(p.id)}">${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
+      <div class="field"><label for="ob-rel">관계 (부모님)</label><select id="ob-rel">${RELS.filter(r=>r!=='선수 본인').map(r=>`<option>${r}</option>`).join('')}</select></div></div>`:'<p class="hint">아직 선수 명단이 없어요. 등록 후 내 정보에서 아이를 고를 수 있어요.</p>'}
+    <div class="actions"><button class="btn primary wide" id="obJoin">등록하기</button></div>
+    <details class="more"><summary>초대 코드가 있어요</summary><div class="inline"><div class="field"><label for="ob-code">초대 코드</label><input id="ob-code" autocapitalize="characters" placeholder="예: K3F9QZ"></div><button class="btn" id="obCode">확인</button></div></details>
+    <details class="more"><summary>다른 기기에서 쓰던 계정이 있어요</summary><div class="inline"><div class="field"><label for="ob-restore">계정 코드</label><input id="ob-restore" autocapitalize="off" placeholder="내 정보 화면의 계정 코드"></div><button class="btn" id="obRestore">불러오기</button></div></details>
+  </div>`;
+}
 function render(){
   const app=document.getElementById('app');
-  const rp=ME.ready?`<span class="pill role-${role}">${ROLES[role]}${roleAuto&&!ME.owner&&dbState==='ready'?'':''}</span>`:'';
+  const rp=role!=='none'&&dbState==='ready'?`${bellBtn()}<span class="pill role-${role}">${ROLES[role]}</span>`:'';
+  const head=`<header class="top"><div class="crest" role="img" aria-label="수지 위너스 풋볼아카데미 엠블럼"></div>
+      <div class="brand"><h1>수지<span class="w">위너스</span> 캘린더</h1></div><span class="role-slot">${rp}</span></header>`;
+  if(dbState!=='ready'||role==='none'){app.innerHTML=`<div class="wrap">${head}${gateHtml()}</div>${V.sheet&&V.sheet.kind==='copy'?sheetHtml():''}`;return}
   let body='';
   if(V.tab==='cal')body=viewCal();else if(V.tab==='list')body=viewList();else if(V.tab==='team')body=viewTeam();else body=viewMe();
-  app.innerHTML=`<div class="wrap">
-    <header class="top"><div class="crest" role="img" aria-label="수지 위너스 풋볼아카데미 엠블럼"></div>
-      <div class="brand"><h1>수지<span class="w">위너스</span> 캘린더</h1></div><span class="role-slot">${bellBtn()}${rp}</span></header>
-    ${dbState==='static'?'<div class="notice">보기 전용 화면이에요. 일정 등록·역할 관리는 claude.ai 앱 링크에서 할 수 있어요. 개인 일정은 이 기기에 저장돼요.</div>':''}
-    ${dbState==='off'?'<div class="notice">팀 일정 저장소에 연결되지 않았어요. claude.ai에 로그인한 상태로 공유받은 링크를 열면 팀 일정이 보여요. 개인 일정은 이 기기에서 계속 쓸 수 있어요.</div>':''}
-    ${body}
-  </div>
+  app.innerHTML=`<div class="wrap">${head}${body}</div>
   <nav class="tabs" aria-label="메뉴"><div class="in">
     ${tabBtn('cal','달력',svg.cal)}${tabBtn('list','일정',svg.list)}
     <button class="fab" id="fab" aria-label="일정 추가">+</button>
@@ -612,25 +633,31 @@ function viewList(){
   <div class="section-title"><span>지난 대회 · 행사</span></div>
   <div class="list">${past.length?past.map(o=>evRow(o)).join(''):'<div class="empty-box">아직 지난 일정이 없어요</div>'}</div>`;
 }
+const RANK={admin:0,director:1,coach:2,parent:3,player:4};
+const teamLink=()=>location.origin+location.pathname+'?db='+encodeURIComponent(SYNC?SYNC.db:'')+'&team='+encodeURIComponent(SYNC?SYNC.room:'');
+const inviteLink=c=>teamLink()+'&invite='+c;
 function viewTeam(){
   const t=TEAM;
-  const players=PL.slice().sort((a,b)=>(+a.number||999)-(+b.number||999)||a.name.localeCompare(b.name));
+  const players=PL.slice().sort(byNum);
   const child=childName();
   let mbHtml='';
-  if(isAdmin()){
-    const ML=[...new Set(MB.map(m=>m.id).concat(PR.map(r=>r.id)))].map(id=>MB.find(m=>m.id===id)||{id,role:'parent',unset:true});
-    const ids=ML.map(m=>m.id);resolveNames(ids);
-    mbHtml=`<div class="section-title"><span>멤버 · 권한</span><span class="hint">관리자만 보여요</span></div>
+  if(canManage()){
+    const users=MB.slice().sort((a,b)=>(RANK[a.role]??9)-(RANK[b.role]??9)||String(a.name).localeCompare(String(b.name)));
+    const c=V.mb.confirm,cu=c&&MB.find(x=>x.id===c.id);
+    mbHtml=`<div class="section-title"><span>멤버 · 권한 <span class="hint">${users.length}명</span></span><button class="btn sm" id="joinCopy">가입 링크 복사</button></div>
     <div class="card">
-      ${ML.length?ML.map(m=>`<div class="member"><div class="nm"><strong>${h(nameOf(m.id))}</strong><small>${(()=>{const l=linkOf(m.id);return l&&relLabel(l)?h(relLabel(l))+(l.by==='self'?' · 본인이 설정':''):'연결된 선수 없음'})()}</small></div>
-        <select id="mr-${h(m.id)}" data-mrole="${h(m.id)}" aria-label="역할">${m.unset?'<option value="" selected>역할 지정</option>':''}${ASSIGNABLE.map(r=>`<option value="${r}" ${m.role===r?'selected':''}>${ROLES[r]}</option>`).join('')}</select>
-        <button class="iconbtn" data-mdel="${h(m.id)}" aria-label="멤버 삭제">✕</button></div>`).join(''):'<p class="hint" style="margin:0">아직 역할을 지정한 멤버가 없어요. 지정하지 않은 사람은 공유 권한에 따라 코치(편집자) 또는 부모님으로 보여요.</p>'}
-      <div class="inline" style="margin-top:12px"><div class="field" style="margin-top:0"><label for="mb-q">멤버 찾기 (이름)</label><input id="mb-q" placeholder="예: 김코치" value="${h(V.mb.q)}"></div><button class="btn" id="mbSearch">찾기</button></div>
-      ${V.mb.hits.length?`<div class="hits">${V.mb.hits.map(x=>`<button data-mpick="${h(x.id)}" aria-pressed="${V.mb.pick===x.id}">${h(x.name||'이름 없음')}${x.guest?' · 외부 초대':''}</button>`).join('')}</div>`:''}
-      ${V.mb.pick?`<div class="row"><div class="field"><label for="mb-role">역할</label><select id="mb-role">${ASSIGNABLE.map(r=>`<option value="${r}" ${V.mb.role===r?'selected':''}>${ROLES[r]}</option>`).join('')}</select></div>
-        <div class="field"><label for="mb-player">연결할 선수</label><select id="mb-player"><option value="">없음</option>${players.map(p=>`<option value="${h(p.id)}" ${V.mb.player===p.id?'selected':''}>${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
-        <div class="field"><label for="mb-rel">관계</label><select id="mb-rel">${RELS.map(r=>`<option ${V.mb.rel===r?'selected':''}>${r}</option>`).join('')}</select></div></div>
-        <div class="actions"><button class="btn primary wide" id="mbSave">역할 저장</button></div>`:''}
+      ${users.map(u=>`<div class="member"><div class="nm"><strong>${h(u.name||'이름 없음')}${u.id===ME.id?' (나)':''}</strong><small>${(()=>{const l=linkOf(u.id);return l&&relLabel(l)?h(relLabel(l)):(u.role==='parent'||u.role==='player'?'아이 미연결':'')})()}</small></div>
+        ${u.role==='admin'?'<span class="pill role-admin">관리자</span>':`<select id="mr-${h(u.id)}" data-mrole="${h(u.id)}" aria-label="${h(u.name||'')} 역할">${ASSIGNABLE.map(r=>`<option value="${r}" ${u.role===r?'selected':''}>${ROLES[r]}</option>`).join('')}</select>`}
+        ${isAdmin()&&u.role!=='admin'?`<button class="iconbtn sm" data-madmin="${h(u.id)}" aria-label="관리자 넘기기" title="관리자 넘기기">♔</button><button class="iconbtn sm" data-mdel="${h(u.id)}" aria-label="멤버 삭제">✕</button>`:''}
+      </div>`).join('')}
+      ${cu?`<div class="confirm">${c.kind==='del'?`<b>${h(cu.name)}</b>님을 멤버에서 삭제할까요? 다시 들어오려면 가입 링크로 새로 등록해야 해요.`:`관리자를 <b>${h(cu.name)}</b>님에게 넘길까요? 나는 감독이 되고, 이후 관리는 새 관리자가 해요.`}<div><button class="btn danger" id="mcYes">${c.kind==='del'?'삭제하기':'관리자 넘기기'}</button><button class="btn" id="mcNo">취소</button></div></div>`:''}
+      <p class="hint" style="margin:10px 0 0">${isAdmin()?'관리자는 역할 변경·멤버 삭제·관리자 넘기기를 할 수 있어요.':'감독·코치는 멤버를 초대하고 역할을 바꿀 수 있어요. 삭제와 관리자 변경은 관리자만 할 수 있어요.'}</p>
+      <h4 style="margin:16px 0 6px">초대하기</h4>
+      <div class="row"><div class="field" style="margin-top:0"><label for="iv-role">역할</label><select id="iv-role">${ASSIGNABLE.map(r=>`<option value="${r}" ${r==='coach'?'selected':''}>${ROLES[r]}</option>`).join('')}</select></div>
+        <div class="field" style="margin-top:0"><label for="iv-player">연결할 선수 (부모님·선수)</label><select id="iv-player"><option value="">없음</option>${players.map(p=>`<option value="${h(p.id)}">${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
+        <div class="field" style="margin-top:0"><label for="iv-rel">관계</label><select id="iv-rel">${RELS.filter(r=>r!=='선수 본인').map(r=>`<option>${r}</option>`).join('')}</select></div></div>
+      <div class="actions"><button class="btn primary wide" id="ivMake">초대 코드 만들기</button></div>
+      ${INV.length?`<div class="rlist" style="margin-top:10px">${INV.map(v=>{const p=v.playerId&&PL.find(x=>x.id===v.playerId);return `<div class="rrow"><span><b>${h(v.id)}</b> · ${ROLES[v.role]||''}${p?' · '+h(p.name)+(v.relation&&v.relation!=='선수 본인'?' '+h(v.relation):''):''}</span><span><button class="btn sm" data-ivcopy="${h(v.id)}">링크 복사</button> ${isAdmin()||v.by===ME.id?`<button class="iconbtn sm" data-ivdel="${h(v.id)}" aria-label="초대 취소">✕</button>`:''}</span></div>`}).join('')}</div>`:''}
     </div>`;
   }
   return `<div class="team-hero" style="margin-top:8px"><div class="crest lg" role="img" aria-label="수지 위너스 풋볼아카데미 엠블럼"></div><div><span>SUJI WINNERS FOOTBALL ACADEMY · SINCE 2020</span><b>${h(t.full)}</b></div></div>
@@ -644,28 +671,32 @@ function viewTeam(){
     <div class="links"><a href="${h(t.site)}" target="_blank" rel="noopener">홈페이지</a><a href="${h(t.blog)}" target="_blank" rel="noopener">블로그</a><a href="${h(t.cafe)}" target="_blank" rel="noopener">네이버 카페</a></div></div>`;
 }
 function permTable(){
-  const rows=[['admin','O','O','O','O'],['director','O','O','–','O'],['coach','O','O','–','O'],['parent','–','–','–','O'],['player','–','–','–','O']];
-  const cell=v=>v==='O'?'<td class="y">●</td>':'<td class="n">–</td>';
-  return `<div style="overflow-x:auto"><table class="perm"><thead><tr><th>역할</th><th>그룹 일정 등록·공지</th><th>그룹·선수 등록</th><th>멤버·권한</th><th>개인 일정</th></tr></thead><tbody>${rows.map(r=>`<tr class="${r[0]===role?'me':''}"><td>${ROLES[r[0]]}${r[0]===role?' (나)':''}</td>${cell(r[1])}${cell(r[2])}${cell(r[3])}${r[4]==='O'?'<td class="p">● 나만</td>':''}</tr>`).join('')}</tbody></table></div>`;
+  const rows=[['admin',1,1,1,1],['director',1,1,1,0],['coach',1,1,1,0],['parent',0,0,0,0],['player',0,0,0,0]];
+  const cell=v=>v?'<td class="y">●</td>':'<td class="n">–</td>';
+  return `<div style="overflow-x:auto"><table class="perm"><thead><tr><th>역할</th><th>그룹 일정·공지</th><th>그룹·선수 등록</th><th>멤버 초대</th><th>삭제·관리자 변경</th><th>개인 일정</th></tr></thead><tbody>${rows.map(r=>`<tr class="${r[0]===role?'me':''}"><td>${ROLES[r[0]]}${r[0]===role?' (나)':''}</td>${cell(r[1])}${cell(r[2])}${cell(r[3])}${cell(r[4])}<td class="p">● 나만</td></tr>`).join('')}</tbody></table></div>`;
 }
 function viewMe(){
-  const child=childName(); const linked=ME.id&&MB.find(x=>x.id===ME.id&&x.playerId);
+  const me=MB.find(x=>x.id===ME.id)||{};
+  const child=childName();
   const mine=EV.filter(e=>child&&(e.duties||[]).some(d=>d.who.includes(child))).sort((a,b)=>b.date.localeCompare(a.date));
   const myP=PERSONAL.slice().sort((a,b)=>a.date.localeCompare(b.date)).filter(e=>e.date>=addDays(TODAY,-30));
+  const players=PL.slice().sort(byNum);const l=myLink();
   return `<div class="section-title"><span>내 정보</span></div>
-  <div class="card"><dl class="kv"><dt>이름</dt><dd>${h(ME.name||'로그인 정보 확인 중')}</dd><dt>역할</dt><dd><span class="pill role-${role}">${ROLES[role]}</span>${roleAuto&&!ME.owner?' <span class="hint">공유 권한으로 자동 지정됐어요. 관리자가 바꿀 수 있어요</span>':''}</dd></dl></div>
-  <div class="card"><h4>역할별 권한</h4>${permTable()}<p class="hint" style="margin:8px 0 0">개인 일정은 이 휴대폰에만 저장돼서 나만 볼 수 있어요. 부모님·선수는 우리 아이가 속한 그룹의 일정만 보고, 공지를 받으면 참여 여부(참석·불참·미정)를 답해요. 감독·코치도 본인 참여를 답하고, 선수 참석 여부를 직접 체크할 수 있어요. 아래에서 우리 아이와 관계(엄마·아빠)를 직접 설정할 수 있어요.</p></div>
+  <div class="card"><div class="inline"><div class="field" style="margin-top:0"><label for="me-name">이름</label><input id="me-name" value="${h(me.name||'')}"></div><button class="btn" id="nmSave">저장</button></div>
+    <dl class="kv" style="margin-top:10px"><dt>역할</dt><dd><span class="pill role-${role}">${ROLES[role]||''}</span></dd>
+    <dt>계정 코드</dt><dd><span style="font-variant-numeric:tabular-nums">${h(ME.id)}</span> <button class="btn sm" id="idCopy">복사</button></dd></dl>
+    <p class="hint" style="margin:6px 0 0">휴대폰을 바꾸면 처음 화면의 '다른 기기에서 쓰던 계정'에 이 코드를 넣어 이어서 쓸 수 있어요.</p></div>
+  <div class="card"><h4>역할별 권한</h4>${permTable()}<p class="hint" style="margin:8px 0 0">부모님·선수는 우리 아이가 속한 그룹 일정만 보고, 공지를 받으면 참여 여부를 답해요. 개인 일정은 이 휴대폰에만 저장돼요.</p></div>
   <div class="section-title"><span>우리 아이</span></div>
-  <div class="card">${(()=>{const l=myLink();const players=PL.slice().sort((a,b)=>(+a.number||999)-(+b.number||999));
-    if(l&&l.by==='admin') return `<p style="margin:0"><b>${h(relLabel(l))}</b>(으)로 등록되어 있어요. 바꾸려면 관리자에게 알려주세요.</p>`;
-    if(!players.length) return `<div class="field" style="margin-top:0"><label for="childName">아이 이름 (선수 명단이 등록되기 전까지 임시로 써요 · 이 휴대폰에만 저장)</label><input id="childName" placeholder="예: 도아" value="${h(L.child)}"></div>`;
-    return `${l?`<p style="margin:0 0 6px">지금: <b>${h(relLabel(l))}</b> · ${h(groupsLabel((PL.find(x=>x.id===l.playerId)||{}).groupIds))}</p>`:''}<div class="row"><div class="field" style="margin-top:0"><label for="lk-player">우리 아이 (선수)</label><select id="lk-player"><option value="">선택</option>${players.map(p=>`<option value="${h(p.id)}" ${l&&l.playerId===p.id?'selected':''}>${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
-      <div class="field" style="margin-top:0"><label for="lk-rel">나는</label><select id="lk-rel">${RELS.map(r=>`<option ${(l?l.relation:'엄마')===r?'selected':''}>${r}</option>`).join('')}</select></div></div>
-      <div class="actions"><button class="btn primary wide" id="lkSave">저장</button></div>`})()}</div>
+  <div class="card">${!players.length?'<p class="hint" style="margin:0">아직 선수 명단이 없어요. 코치님이 선수를 등록하면 여기서 고를 수 있어요.</p>':`${l?`<p style="margin:0 0 6px">지금: <b>${h(relLabel(l))}</b> · ${h(groupsLabel((PL.find(x=>x.id===l.playerId)||{}).groupIds))}</p>`:''}<div class="row"><div class="field" style="margin-top:0"><label for="lk-player">우리 아이 (선수)</label><select id="lk-player"><option value="">선택</option>${players.map(p=>`<option value="${h(p.id)}" ${l&&l.playerId===p.id?'selected':''}>${h(p.number?p.number+'번 ':'')}${h(p.name)}</option>`).join('')}</select></div>
+      <div class="field" style="margin-top:0"><label for="lk-rel">나는</label><select id="lk-rel">${RELS.map(r=>`<option ${(l?l.relation:(role==='player'?'선수 본인':'엄마'))===r?'selected':''}>${r}</option>`).join('')}</select></div></div>
+      <div class="actions"><button class="btn primary wide" id="lkSave">저장</button></div>`}</div>
   <div class="section-title"><span>내 개인 일정</span><button class="btn sm" id="addPersonal">+ 개인 일정</button></div>
   <div class="list">${myP.length?myP.map(e=>evRow({e,date:e.date,orig:e.date,start:e.start,end:e.end})).join(''):'<div class="empty-box">개인 일정이 없어요. 병원, 개인 레슨처럼 나만 볼 일정을 넣어보세요</div>'}</div>
   <div class="section-title"><span>당번 기록</span></div>
-  <div class="list">${!child?'<div class="empty-box">아이 이름을 먼저 넣어주세요</div>':mine.length?mine.map(e=>{const d=e.duties.find(x=>x.who.includes(child));return evRow({e,date:e.date,orig:e.date},(ICON[d.role]||'⭐')+' '+d.role+' 당번'+(d.memo?' · '+d.memo:''))}).join(''):'<div class="empty-box">아직 맡은 당번이 없어요</div>'}</div>`;
+  <div class="list">${!child?'<div class="empty-box">우리 아이를 먼저 연결해 주세요</div>':mine.length?mine.map(e=>{const d=e.duties.find(x=>x.who.includes(child));return evRow({e,date:e.date,orig:e.date},(ICON[d.role]||'⭐')+' '+d.role+' 당번'+(d.memo?' · '+d.memo:''))}).join(''):'<div class="empty-box">아직 맡은 당번이 없어요</div>'}</div>
+  <div class="section-title"><span>팀 저장소</span></div>
+  <div class="card"><p class="hint" style="margin:0;overflow-wrap:anywhere">${h(SYNC?SYNC.db+' · '+SYNC.room:'')}</p></div>`;
 }
 
 /* ================= sheets ================= */
@@ -911,22 +942,57 @@ document.addEventListener('click',async ev=>{
   if(t.id==='addPlayer'||t.id==='addPlayer2'){V.sheet={kind:'player',draft:{id:'',name:'',number:'',birth:'',groupIds:GR.length===1?[GR[0].id]:[],memo:''}};render();return}
   if(t.dataset.pedit){V.sheet={kind:'player',draft:JSON.parse(JSON.stringify(PL.find(p=>p.id===t.dataset.pedit)))};render();return}
   if(t.id==='plDel'){const id=t.dataset.id;V.sheet=null;run(()=>dbDel('players',id),'명단에서 삭제했어요');return}
-  if(t.id==='mbSearch'){
-    const q=val('mb-q')||'';V.mb.q=q;
-    if(!U||typeof U.search!=='function'){toast('멤버 검색을 쓸 수 없어요');return}
-    try{const r=await U.search(q);const arr=Array.isArray(r)?r:(r&&(r.results||r.hits||r.users))||[];V.mb.hits=arr.map(x=>({id:x.id,name:x.name||'',guest:!!x.guest})).filter(x=>x.id);V.mb.pick=null;
-      arr.forEach(x=>{if(x.id)NAMES[x.id]=x.name||''});render();if(!arr.length)toast('찾는 사람이 없어요. 먼저 이 페이지를 그 분께 공유해 주세요')}catch(e){toast('검색하지 못했어요')}
-    return}
-  if(t.dataset.mpick){V.mb.pick=t.dataset.mpick;const m=MB.find(x=>x.id===V.mb.pick);V.mb.role=m?m.role:'parent';V.mb.player=m&&m.playerId||'';V.mb.rel=m&&m.relation||'엄마';render();return}
-  if(t.id==='mbSave'){const id=V.mb.pick;if(id===ME.id&&ME.owner){toast('관리자 본인의 역할은 바꿀 수 없어요');return}
-    const data={role:val('mb-role')||'parent',playerId:val('mb-player')||'',relation:val('mb-player')?(val('mb-rel')||''):''};
-    V.mb={q:'',hits:[],pick:null,role:'parent',player:''};run(()=>dbSet('members',id,data),ROLES[data.role]+' 역할을 저장했어요');return}
-  if(t.id==='lkSave'){
-    const data={playerId:val('lk-player')||'',relation:val('lk-rel')||''};
-    if(!data.playerId){toast('우리 아이를 선택해 주세요');return}
-    const label=()=>relLabel(data);
-    if(db&&ME.id){ try{busy=true;await dbSet('profiles',ME.id,data);toast(label()+'(으)로 저장했어요')}catch(e){L.link=data;saveL();toast('공유 저장 권한이 없어 이 휴대폰에만 저장했어요')}finally{busy=false;render()} }
-    else{L.link=data;saveL();render();toast('이 휴대폰에 저장했어요')}
+  if(t.id==='syncSave'){
+    const d=(val('sy-db')||'').replace(/\/+$/,'');const r=(val('sy-room')||'suji-winners').replace(/[.#$\[\]\/\s]/g,'-');
+    if(!/^https:\/\/[^\s]+(firebaseio\.com|firebasedatabase\.app)$/.test(d)){toast('https:// 로 시작하고 firebasedatabase.app 으로 끝나는 주소를 넣어주세요');return}
+    SYNC={db:d,room:r};lsSet(APPKEY+':sync',SYNC);connect();return}
+  if(t.id==='syncReset'){SYNC=null;try{localStorage.removeItem(APPKEY+':sync')}catch(e){}if(es)try{es.close()}catch(e){}dbState='setup';render();return}
+  if(t.id==='syncRetry'){connect();return}
+  if(t.id==='obAdmin'){
+    const name=val('ob-name');if(!name){toast('이름을 넣어주세요');return}
+    if(META&&META.adminId){toast('이미 관리자가 등록돼 있어요');render();return}
+    const now2=new Date().toISOString();
+    const patch={meta:{adminId:ME.id,createdAt:now2,team:TEAM.name}};patch['users/'+ME.id]={name,role:'admin',at:now2};
+    if(!EV.length){try{const a=await (await fetch('events.json',{cache:'no-store'})).json();(a||[]).forEach(e=>{const c=Object.assign({},e);const id=c.id;delete c.id;if(id)patch['events/'+id]=c})}catch(e){}}
+    if(!GR.length){patch['groups/g-7-elite']={name:'7세 선수반',order:1};patch['groups/g-7-hobby']={name:'7세 취미반',order:2}}
+    run(()=>dbPatch(patch),name+'님, 관리자로 등록했어요');return}
+  if(t.id==='obCode'){const c=(val('ob-code')||'').toUpperCase();if(!INV.find(x=>x.id===c)){toast('초대 코드를 찾을 수 없어요');return}V.ob.code=c;render();return}
+  if(t.id==='obCodeClear'){V.ob.code='';INVITE='';render();return}
+  if(t.id==='obJoin'){
+    const name=val('ob-name');if(!name){toast('이름을 넣어주세요');return}
+    const code=(V.ob.code||INVITE||'').toUpperCase();const inv=code&&INV.find(x=>x.id===code);const now2=new Date().toISOString();
+    let data;
+    if(inv) data={name,role:inv.role,playerId:inv.playerId||'',relation:inv.relation||'',invitedBy:inv.by||'',at:now2};
+    else{const r=(document.querySelector('input[name="ob-role"]:checked')||{}).value==='player'?'player':'parent';
+      data={name,role:r,playerId:val('ob-player')||'',relation:r==='player'?'선수 본인':(val('ob-rel')||'엄마'),at:now2}}
+    const patch={};patch['users/'+ME.id]=data;if(inv)patch['invites/'+code]=null;
+    INVITE='';V.ob.code='';
+    run(()=>dbPatch(patch),name+'님, '+ROLES[data.role]+'(으)로 등록했어요');return}
+  if(t.id==='obRestore'){const c=(val('ob-restore')||'').trim();if(!MB.find(x=>x.id===c)){toast('그 계정 코드를 찾을 수 없어요');return}
+    lsSet(APPKEY+':me',c);ME.id=c;loadPersonal();resolveRole();render();toast('계정을 불러왔어요');return}
+  if(t.id==='lkSave'){const me=MB.find(x=>x.id===ME.id);if(!me)return;
+    const data={playerId:val('lk-player')||'',relation:val('lk-rel')||''};if(!data.playerId){toast('우리 아이를 선택해 주세요');return}
+    run(()=>dbSet('members',ME.id,Object.assign({},me,data)),relLabel(data)+'(으)로 저장했어요');return}
+  if(t.id==='nmSave'){const me=MB.find(x=>x.id===ME.id);const n=val('me-name');if(!me||!n)return;run(()=>dbSet('members',ME.id,Object.assign({},me,{name:n})),'이름을 바꿨어요');return}
+  if(t.id==='ivMake'){if(!canManage())return;
+    const code=Math.random().toString(36).slice(2,8).toUpperCase();const r=val('iv-role')||'parent';const pid=val('iv-player')||'';
+    const fam=r==='parent'||r==='player';
+    const inv={role:r,playerId:fam?pid:'',relation:r==='player'?'선수 본인':(r==='parent'?(val('iv-rel')||'엄마'):''),by:ME.id,at:new Date().toISOString()};
+    run(()=>dbSet('invites',code,inv),ROLES[r]+' 초대 코드 '+code+'를 만들었어요. 링크 복사를 눌러 보내주세요');return}
+  if(t.dataset.ivcopy){const inv=INV.find(x=>x.id===t.dataset.ivcopy);if(!inv)return;
+    const p=inv.playerId&&PL.find(x=>x.id===inv.playerId);
+    const txt='[수지위너스 캘린더] '+ROLES[inv.role]+(p?' ('+p.name+(inv.relation&&inv.relation!=='선수 본인'?' '+inv.relation:'')+')':'')+'(으)로 초대해요.\n아래 링크를 열고 이름만 넣으면 돼요.\n'+inviteLink(inv.id)+'\n초대 코드: '+inv.id;
+    if(!(await copyText(txt,'초대 링크를 복사했어요. 카톡에 붙여넣기 하세요'))){V.sheet={kind:'copy',text:txt};render()}return}
+  if(t.dataset.ivdel){const c=t.dataset.ivdel;run(()=>dbDel('invites',c),'초대를 취소했어요');return}
+  if(t.id==='joinCopy'){const txt='[수지위너스 캘린더]\n아래 링크를 열고 이름과 우리 아이를 선택해 주세요.\n'+teamLink();
+    if(!(await copyText(txt,'가입 링크를 복사했어요. 카톡에 붙여넣기 하세요'))){V.sheet={kind:'copy',text:txt};render()}return}
+  if(t.id==='idCopy'){if(!(await copyText(ME.id,'내 계정 코드를 복사했어요')))toast('계정 코드: '+ME.id);return}
+  if(t.dataset.madmin){V.mb.confirm={kind:'admin',id:t.dataset.madmin};render();return}
+  if(t.dataset.mdel){V.mb.confirm={kind:'del',id:t.dataset.mdel};render();return}
+  if(t.id==='mcNo'){V.mb.confirm=null;render();return}
+  if(t.id==='mcYes'){const c=V.mb.confirm;V.mb.confirm=null;if(!isAdmin()||!c)return;
+    if(c.kind==='del') run(()=>dbDel('members',c.id),'멤버를 삭제했어요');
+    else{const p={};p['users/'+c.id+'/role']='admin';p['users/'+ME.id+'/role']='director';p['meta/adminId']=c.id;run(()=>dbPatch(p),'관리자를 넘겼어요. 나는 감독이 됐어요')}
     return}
   if(t.dataset.gfset){V.gf=t.dataset.gf||'';render();return}
   if(t.id==='bell'||t.id==='bell2'){V.sheet={kind:'inbox'};render();return}
@@ -942,13 +1008,13 @@ document.addEventListener('click',async ev=>{
     const cnt=familyCount(e.groupIds);
     run(()=>dbSet('notices',newId('n'),n),groupsLabel(e.groupIds)+' 선수·부모님 '+cnt+'명에게 알림을 보냈어요');return}
   if(t.dataset.rsvp){
-    if(!ME.id){toast('로그인 정보를 확인하지 못했어요');return}
+    if(!ME.id){toast('계정 정보를 확인하지 못했어요');return}
     const staff=!!t.dataset.staff&&canManage();const p=staff?null:myPlayer();
     if(!staff&&!p){toast('우리 아이를 먼저 연결해 주세요');return}
     const cur=RV.find(x=>x.id===ME.id)||{};const answers=Object.assign({},cur.answers||{});
     answers[t.dataset.key]=staff?{s:t.dataset.rsvp,staff:true,at:new Date().toISOString()}:{s:t.dataset.rsvp,p:p.id,at:new Date().toISOString()};
     run(()=>dbSet('rsvp',ME.id,Object.assign({},cur,{answers})),(staff?'나의 참여: ':'')+RS[t.dataset.rsvp]+'(으)로 답했어요');return}
-  if(t.dataset.mdel){const id=t.dataset.mdel;run(()=>dbDel('members',id),'역할 지정을 해제했어요');return}
+
 });
 document.addEventListener('change',ev=>{
   const t=ev.target;
@@ -967,7 +1033,8 @@ document.addEventListener('change',ev=>{
     if(t.value) marks[k][pid]={s:t.value,at:new Date().toISOString()}; else delete marks[k][pid];
     const pn=(PL.find(x=>x.id===pid)||{}).name||'선수';
     run(()=>dbSet('rsvp',ME.id,Object.assign({},cur,{marks})),pn+' '+(t.value?RS[t.value]:'미응답')+'(으)로 체크했어요');return}
-  if(t.dataset&&t.dataset.mrole){if(!t.value)return;const id=t.dataset.mrole;const m=MB.find(x=>x.id===id);run(()=>dbSet('members',id,{role:t.value,playerId:m&&m.playerId||'',relation:m&&m.relation||''}),ROLES[t.value]+' 역할로 바꿨어요');return}
+  if(t.dataset&&t.dataset.mrole){if(!canManage())return;const id=t.dataset.mrole;const u=MB.find(x=>x.id===id);if(!u||u.role==='admin')return;
+    run(()=>dbPut('users/'+id+'/role',t.value),(u.name||'멤버')+' → '+ROLES[t.value]);return}
 });
 document.addEventListener('submit',ev=>{
   ev.preventDefault();const id0=ev.target.id;
@@ -1003,9 +1070,8 @@ document.addEventListener('submit',ev=>{
     const id=d.id||newId('pl');V.sheet=null;run(()=>dbSet('players',id,p),p.name+' 선수를 저장했어요');return}
 });
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&V.sheet){V.sheet=null;render()}});
-render();
+render();connect();
 })();
 </script>
-
 </body>
 </html>
