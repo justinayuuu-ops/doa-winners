@@ -79,26 +79,27 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .next button{background:var(--on-navy);color:var(--navy);white-space:nowrap}
 .next.empty{grid-template-columns:minmax(0,1fr)}
 .next.empty .dd{color:var(--on-navy);font-size:15px;border:0;text-align:left;padding:0}
-.cal{background:var(--surface);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
-.cal-head{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 10px}
+.cal{background:var(--surface);border-radius:18px;padding:8px 8px 6px;box-shadow:var(--shadow)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 6px}
 .cal-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:20px;font-variant-numeric:tabular-nums}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;font-size:18px;line-height:1;flex:none}
-.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
-.dow{font-size:11px;font-weight:400;text-align:center;color:var(--muted);padding-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.dow{font-size:11px;font-weight:400;text-align:center;color:var(--muted);padding-bottom:2px}
 .dow.sat{color:var(--pitch)}
 .dow.sun,.day.sun .n i{color:var(--kit)}
-.day{position:relative;border:0;background:transparent;border-radius:12px;min-height:58px;padding:4px 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px}
+.day{position:relative;border:0;background:transparent;border-radius:10px;min-height:44px;padding:3px 0 2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px}
 /* 날짜 숫자: 원 안 정중앙 — 글자 상하 여백을 잘라 숫자 몸통 기준으로 가운데 맞춤 */
-.day .n{position:relative;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;font-size:15px;line-height:1;font-variant-numeric:tabular-nums}
+.day .n{position:relative;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;font-size:14px;line-height:1;font-variant-numeric:tabular-nums}
 .day .n i{position:relative;z-index:1;font-style:normal;display:block;line-height:1;text-box:trim-both cap alphabetic}
 @supports not (text-box:trim-both cap alphabetic){.day .n i{transform:translateY(.07em)}}
 .day.today .n{background:var(--navy)}
 .day.today .n i{color:var(--on-navy)!important}
-.day .mark{display:block;width:22px;height:22px;flex:none}
-.day .mark .ball{filter:drop-shadow(0 1px 1px rgba(18,40,70,.25))}
+.day .dball{display:block;width:16px;height:16px;flex:none}
+.day .dball .ball{display:block;width:100%;height:100%}
 
 .day .more{position:absolute;top:2px;right:3px;font-size:10px;color:var(--muted);font-style:normal}
-.bwrap{display:block;color:var(--c)}
+.bwrap{display:block;color:var(--bc,var(--c))}
+.bwrap.t-class{--bc:#0F62D6}.bwrap.t-match{--bc:#E01B2F}.bwrap.t-personal{--bc:#7A35E8}.bwrap.gray{--bc:#7C8794}
 .bwrap .ball{display:block;width:100%;height:100%}
 .bwrap.t-class.gray,.bwrap.gray{color:var(--off)}
 .bwrap.lg{width:16px;height:16px;flex:none}
@@ -111,7 +112,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 @media (prefers-reduced-motion: reduce){.dayhead.flash{animation:none}}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--c)}
 .t-match{--c:var(--kit);--cs:var(--kit-soft)} .t-class{--c:var(--pitch);--cs:var(--pitch-soft)} .t-event{--c:var(--gold);--cs:var(--gold-soft)} .t-off{--c:var(--off);--cs:var(--off-soft)}
-.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted);padding:10px 4px 2px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);padding:6px 4px 2px}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .list{display:flex;flex-direction:column;gap:8px}
 .ev{width:100%;text-align:left;border:0;background:var(--surface);border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:center;box-shadow:0 1px 0 var(--line)}
@@ -238,7 +239,6 @@ header.top{justify-content:flex-start;align-items:center}
 header.top .brand{flex:1;min-width:0;display:flex;align-items:center;height:44px}
 header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .role-slot{flex:none;display:flex;align-items:center}
-@media (max-width:360px){.bell{position:relative;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink);margin-right:6px}
 .bell{position:relative;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);display:grid;place-items:center;margin-right:8px;padding:0;transition:background .2s,border-color .2s}
 .bell svg{width:20px;height:20px;display:block}
 .bell.hot{background:var(--lime);border-color:var(--lime);color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--lime) 35%,transparent)}
@@ -277,6 +277,33 @@ header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .rrow{align-items:center}
 .staffbox{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .staffbox h4{margin:0 0 6px}
+.sec{background:var(--surface);border-radius:16px;padding:12px 14px 14px;margin-top:10px}
+.sec h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line);font-family:var(--f-display);font-weight:400;font-size:16px;color:var(--ink)}
+.sec h3 svg{width:20px;height:20px;flex:none;color:var(--pitch)}
+.sec-sub{margin-left:auto;font-size:12.5px;color:var(--muted);font-family:var(--f-body)}
+.sec-line{margin:0;font-size:14.5px}
+.sec .times{margin-top:8px}
+.sec .times div{background:var(--bg)}
+.kits{display:flex;flex-wrap:wrap;gap:8px}
+.kit{display:inline-flex;align-items:center;gap:8px;background:var(--bg);border-radius:12px;padding:6px 12px 6px 8px}
+.kit svg{width:30px;height:30px;flex:none}
+.kit b{font-weight:400;font-size:14px}
+.notes2{font-size:14px;line-height:1.55}
+.notes2 p{margin:0}
+.notes2 .nh{font-family:var(--f-display);color:var(--pitch);margin:2px 0 4px}
+.notes2 .li{display:flex;gap:6px}
+.notes2 .bu{flex:none;min-width:1em;text-align:center}
+.notes2 .lt{flex:1;min-width:0;overflow-wrap:anywhere}
+.notes2 .gap{height:8px}
+.ask{margin:0 0 8px;font-size:13px;color:var(--kit)}
+.rsvp.pending button{border-style:dashed;border-color:var(--muted);color:var(--ink)}
+.rsvp.answered button[aria-pressed="false"]{opacity:.55}
+.rsvp button[aria-pressed="true"]{color:var(--on-navy)!important}
+.rsvp button[aria-pressed="true"].r-yes{background:var(--pitch)!important;border-color:var(--pitch)}
+.rsvp button[aria-pressed="true"].r-no{background:var(--kit)!important;border-color:var(--kit)}
+.rsvp button[aria-pressed="true"].r-maybe{background:var(--gold)!important;border-color:var(--gold)}
+.gpick label{display:inline-flex}
+.gpick span{white-space:nowrap}
 .lockline{font-size:12px;color:var(--violet);font-weight:400}
 
 .gate{margin-top:14px;padding:18px}
@@ -387,6 +414,7 @@ function writeErr(e){
 let busy=false;
 async function run(fn,ok){if(busy)return;busy=true;try{await fn();if(ok)toast(ok)}catch(e){console.warn(e);writeErr(e)}finally{busy=false;render()}}
 const newId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+async function sendNotice(e,date,orig,kind){await dbSet('notices',newId('n'),{eventId:e.id,date,orig,title:e.title,type:e.type,kind,groupIds:e.groupIds||[],sentAt:new Date().toISOString(),sentBy:ME.id||''})}
 
 /* ================= dates ================= */
 const pad=n=>String(n).padStart(2,'0');
@@ -474,7 +502,7 @@ function myRsvp(key){const r=RV.find(x=>x.id===ME.id);return r&&r.answers&&r.ans
 function rsvpFor(pid,key){let best=null;for(const r of RV){const cands=[r.answers&&r.answers[key],r.marks&&r.marks[key]&&r.marks[key][pid]&&Object.assign({p:pid,by:r.id},r.marks[key][pid])];for(const a of cands){if(a&&a.p===pid&&!a.staff&&(!best||String(a.at)>String(best.at)))best=Object.assign({by:a.by||r.id},a)}}return best}
 const STAFF=['admin','director','coach'];
 function staffAnswers(key){return RV.map(r=>({id:r.id,a:r.answers&&r.answers[key]})).filter(x=>x.a&&x.a.staff)}
-function rsvpButtons(key,cur,past,extra){return `<div class="rsvp">${['yes','no','maybe'].map(x=>`<button data-rsvp="${x}" data-key="${h(key)}" ${extra||''} aria-pressed="${cur===x}" class="r-${x}" ${past?'disabled':''}>${RS[x]}</button>`).join('')}</div>`}
+function rsvpButtons(key,cur,past,extra){return `${cur?'':`<p class="ask">${past?'지난 일정이에요':'아직 답하지 않았어요 · 아래에서 골라주세요'}</p>`}<div class="rsvp ${cur?'answered':'pending'}">${['yes','no','maybe'].map(x=>`<button type="button" data-rsvp="${x}" data-key="${h(key)}" ${extra||''} aria-pressed="${cur===x}" class="r-${x}" ${past?'disabled':''}>${cur===x?'✓ ':''}${RS[x]}</button>`).join('')}</div>`}
 function myNotices(){
   if(canManage()) return [];
   const mine=myGroups();
@@ -500,7 +528,7 @@ function groupsHtml(child){
 }
 function audienceHtml(e,o){
   const key=occKey(e.id,o.date),past=o.date<TODAY;
-  let html=`<div class="card"><h4>대상 · ${h(groupsLabel(e.groupIds))}</h4>`;
+  let html=`<section class="sec"><h3>${IC.users}참여 <span class="sec-sub">${h(groupsLabel(e.groupIds))}</span></h3>`;
   if(canManage()){
     const ps=playersIn(e.groupIds).sort(byNum);
     const st=ps.map(p=>({p,a:rsvpFor(p.id,key)}));
@@ -520,7 +548,7 @@ function audienceHtml(e,o){
     else{const a=myRsvp(key);const cur=a?a.s:'';
       html+=`<p style="margin:0 0 8px"><b>${h(p.name)}</b> 참여하나요?</p>${rsvpButtons(key,cur,past)}${(()=>{const f=rsvpFor(p.id,key);return f&&(!a||String(f.at)>String(a.at))&&f.by!==ME.id?`<p class="hint" style="margin:6px 0 0">감독·코치님이 <b>${RS[f.s]}</b>(으)로 체크했어요</p>`:a?`<p class="hint" style="margin:6px 0 0">${RS[a.s]}(으)로 답했어요. 감독·코치님께 보여요</p>`:''})()}`}
   }
-  return html+'</div>';
+  return html+'</section>';
 }
 function approvalRows(){
   const ps=pendingUsers();
@@ -541,6 +569,40 @@ function groupHtml(s){
   <form id="gForm" autocomplete="off"><div class="field"><label for="g-name">그룹 이름</label><input id="g-name" required value="${h(g.name)}" placeholder="예: 7세 선수반"></div>
   <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn primary" type="submit">저장</button>
   ${g.id?`<button class="btn danger wide" type="button" id="gDel" data-id="${h(g.id)}" ${n?'disabled':''}>그룹 삭제${n?' (선수를 먼저 옮겨주세요)':''}</button>`:''}</div></form>`;
+}
+
+/* ---------- detail helpers: section icons, kit (uniform/socks), notes with hanging indent ---------- */
+const IC={
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  shirt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9.3 2.2L4 4.6L1.6 10L5.5 11.6V21.6H18.5V11.6L22.4 10L20 4.6L14.7 2.2L12 4.9Z"/></svg>',
+  ball:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l4 2.9-1.5 4.6h-5L8 10.4z"/></svg>',
+  bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 7V5.5A2.5 2.5 0 0 1 11.5 3h1A2.5 2.5 0 0 1 15 5.5V7M4 12h16"/></svg>',
+  hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11V4.5a1.5 1.5 0 0 1 3 0V12M14 11.5V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5A6.5 6.5 0 0 1 4 15.5L3.2 12a1.5 1.5 0 0 1 2.7-1.1L8 14"/></svg>',
+  note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"/><path d="M14 3v5h5M8 12h8M8 16h6"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.4 3.3-5.5 6.5-5.5s5.8 2.1 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c1.8.8 3 2.6 3.5 5.4"/></svg>'
+};
+const KIT_COLORS=[[/검정|검은|블랙|black/i,'#1C1F24','검정'],[/빨강|빨간|레드|red/i,'#D3263B','빨강'],[/흰|화이트|white/i,'#FFFFFF','흰색'],[/네이비|남색|navy/i,'#12396A','네이비'],[/파랑|파란|블루|blue/i,'#1474D4','파랑'],[/노랑|노란|옐로|yellow/i,'#F2C200','노랑'],[/초록|녹색|그린|green/i,'#1E8A4E','초록'],[/주황|오렌지|orange/i,'#F07A12','주황'],[/회색|그레이|gray|grey/i,'#8A94A0','회색']];
+function kitColor(txt){for(const [re,c,n] of KIT_COLORS)if(re.test(txt))return {c,n};return null}
+function shirtSvg(c){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 2.2L4 4.6L1.6 10L5.5 11.6V21.6H18.5V11.6L22.4 10L20 4.6L14.7 2.2L12 4.9Z" fill="${c}" stroke="#5A6878" stroke-width="${c==='#FFFFFF'?1.2:0}" stroke-linejoin="round"/><path d="M9.3 2.2L12 4.9L14.7 2.2" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.1"/></svg>`}
+function sockSvg(c){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h7.5v10.2l3.3 3.6a3.6 3.6 0 0 1-.2 5.1l-.2.2a3.6 3.6 0 0 1-5 0L8 15.6z" fill="${c}" stroke="#5A6878" stroke-width="${c==='#FFFFFF'?1.2:0}" stroke-linejoin="round"/><path d="M8 5h7.5M8 7.4h7.5" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/></svg>`}
+function kitHtml(u){
+  const parts=[];let rest=u;
+  const m1=u.match(/([^\s+,/·]+)\s*(유니폼|상의|저지)/);const m2=u.match(/([^\s+,/·]+)\s*(스타킹|양말|삭스)/);
+  if(m1){const k=kitColor(m1[1]);parts.push(`<span class="kit">${shirtSvg(k?k.c:'#12558A')}<b>${h(m1[1]+' '+m1[2])}</b></span>`);rest=rest.replace(m1[0],'')}
+  if(m2){const k=kitColor(m2[1]);parts.push(`<span class="kit">${sockSvg(k?k.c:'#12558A')}<b>${h(m2[1]+' '+m2[2])}</b></span>`);rest=rest.replace(m2[0],'')}
+  rest=rest.replace(/^[\s+,/·]+|[\s+,/·]+$/g,'').replace(/^\(|\)$/g,'').trim();
+  if(!parts.length) return `<p class="sec-line">${h(u)}</p>`;
+  return `<div class="kits">${parts.join('')}</div>${rest?`<p class="hint" style="margin:8px 0 0">${h(rest)}</p>`:''}`;
+}
+function notesHtml(t){
+  const BUL=/^\s*([•·∙\-–\*※✔✓✅☑▶►▸◆◇○●■□★☆♥]|\d{1,2}[.)])\s*(.*)$/;
+  return `<div class="notes2">${String(t).split('\n').map(l=>{
+    if(!l.trim()) return '<div class="gap"></div>';
+    if(/^\s*\[.+\]\s*$/.test(l)) return `<div class="nh">${h(l.trim().replace(/^\[|\]$/g,''))}</div>`;
+    const m=l.match(BUL); if(m) return `<div class="li"><span class="bu">${h(m[1])}</span><span class="lt">${h(m[2])}</span></div>`;
+    return `<p>${h(l)}</p>`}).join('')}</div>`;
 }
 
 /* ================= render ================= */
@@ -647,8 +709,8 @@ function viewCal(){
     const d=new Date(start);d.setDate(start.getDate()+i);const s=ds(d);const evs=eventsOn(s);
     const live=evs.filter(o=>!o.cancel&&o.e.type!=='off');
     const pri=live.find(o=>o.e.type==='match'||o.e.type==='event')||live.find(o=>o.e.type==='class')||live[0]||evs.find(o=>o.e.type!=='personal')||evs[0];
-    const ball=pri?`<span class="mark bwrap t-${ballCls(pri)}">${BALL}</span>`:'';
-    g+=`<button class="day ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n"><i>${d.getDate()}</i></span>${ball||'<span class="mark"></span>'}${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
+    const ball=pri?`<span class="dball bwrap t-${ballCls(pri)}">${BALL}</span>`:'';
+    g+=`<button class="day ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n"><i>${d.getDate()}</i></span>${ball||'<span class="dball"></span>'}${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
   }
   const dayEv=eventsOn(V.sel);
   const un=unreadCount();
@@ -777,18 +839,18 @@ function detailHtml(s){
     <h2>${h(e.title)}</h2><div class="muted">${h(fmtDate(date,true))} · ${dday(date)}</div>${personal?'<div class="lockline">🔒 나만 보는 개인 일정 · 이 휴대폰에만 저장</div>':''}</div>
     <button class="iconbtn" data-close aria-label="닫기">✕</button></div>
   ${status?`<div class="notice">${h(status)}${o.note?' · '+h(o.note):''}</div>`:''}
-  ${tb.length&&!o.cancel?`<div class="times" style="grid-template-columns:repeat(${tb.length},minmax(0,1fr))">${tb.map(x=>`<div><small>${x[0]}</small><b>${h(x[1])}</b></div>`).join('')}</div>`:''}
-  ${e.place||e.parking?`<div class="card"><h4>장소</h4><dl class="kv">${e.place?`<dt>장소</dt><dd>${h(e.place)}</dd>`:''}${e.addr?`<dt>주소</dt><dd>${h(e.addr)}</dd>`:''}${e.parking?`<dt>주차</dt><dd>${h(e.parking)}</dd>`:''}</dl>
-    ${addr?`<div class="links"><a href="https://map.naver.com/p/search/${encodeURIComponent(addr)}" target="_blank" rel="noopener">네이버 지도</a><a href="https://map.kakao.com/?q=${encodeURIComponent(addr)}" target="_blank" rel="noopener">카카오맵</a></div>`:''}</div>`:''}
-  ${e.weather||e.uniform?`<div class="card"><h4>복장 · 날씨</h4><dl class="kv">${e.uniform?`<dt>유니폼</dt><dd>${h(e.uniform)}</dd>`:''}${e.weather?`<dt>날씨</dt><dd>${h(e.weather)}</dd>`:''}</dl></div>`:''}
-  ${(e.matches||[]).length?`<div class="card"><h4>우리 팀 경기</h4><div style="overflow-x:auto"><table class="mt">${e.matches.map(m=>`<tr><td class="tm">${h(m.time)}</td><td class="fd">${h(m.field)}</td><td>${/^순위|위전|결승/.test(m.opp)?'':'vs '}${h(m.opp)}</td><td class="sc">${h(m.score)}</td></tr>`).join('')}</table></div></div>`:''}
-  ${items.length?`<div class="card"><h4>준비물 · ${done}/${items.length} 챙김</h4><div class="bar"><i style="width:${Math.round(done/items.length*100)}%"></i></div>
-    ${items.map((it,i)=>`<label class="check ${ck[it]?'done':''}"><input type="checkbox" id="chk-${i}" data-chk="${h(it)}" ${ck[it]?'checked':''}><span>${h(it)}</span></label>`).join('')}<p class="hint" style="margin:6px 0 0">체크는 이 휴대폰에만 저장돼요.</p></div>`:''}
-  ${(e.duties||[]).length?`<div class="card"><h4>당번</h4>${e.duties.map(d=>{const c=childName();return `<div class="duty ${c&&d.who.includes(c)?'mine':''}"><span class="role">${ICON[d.role]||'⭐'} ${h(d.role)}</span><div style="min-width:0"><span class="who">${h(d.who)}</span>${d.memo?`<small>${h(d.memo)}</small>`:''}</div></div>`}).join('')}</div>`:''}
-  ${e.notes?`<div class="card"><h4>공지 · 메모</h4><div class="notes">${h(e.notes)}</div></div>`:''}
-  ${manage&&isWeekly(e)?`<div class="card"><h4>이 날 수업만 바꾸기 · ${h(fmtDate(o.orig))}</h4><div class="actions" style="margin-top:0">
+  ${!o.cancel?`<section class="sec"><h3>${IC.clock}일시</h3><p class="sec-line">${h(fmtDate(date,true))}</p>${tb.length?`<div class="times" style="grid-template-columns:repeat(${tb.length},minmax(0,1fr))">${tb.map(x=>`<div><small>${x[0]}</small><b>${h(x[1])}</b></div>`).join('')}</div>`:''}</section>`:''}
+  ${e.place||e.parking?`<section class="sec"><h3>${IC.pin}장소</h3><dl class="kv">${e.place?`<dt>장소</dt><dd>${h(e.place)}</dd>`:''}${e.addr?`<dt>주소</dt><dd>${h(e.addr)}</dd>`:''}${e.parking?`<dt>주차</dt><dd>${h(e.parking)}</dd>`:''}</dl>
+    ${addr?`<div class="links"><a href="https://map.naver.com/p/search/${encodeURIComponent(addr)}" target="_blank" rel="noopener">네이버 지도</a><a href="https://map.kakao.com/?q=${encodeURIComponent(addr)}" target="_blank" rel="noopener">카카오맵</a></div>`:''}</section>`:''}
+  ${e.uniform||e.weather?`<section class="sec"><h3>${IC.shirt}복장 · 날씨</h3>${e.uniform?kitHtml(e.uniform):''}${e.weather?`<p class="sec-line" style="margin-top:8px">${h(e.weather)}</p>`:''}</section>`:''}
+  ${(e.matches||[]).length?`<section class="sec"><h3>${IC.ball}경기 시간</h3><div style="overflow-x:auto"><table class="mt">${e.matches.map(m=>`<tr><td class="tm">${h(m.time)}</td><td class="fd">${h(m.field)}</td><td>${/^순위|위전|결승/.test(m.opp)?'':'vs '}${h(m.opp)}</td><td class="sc">${h(m.score)}</td></tr>`).join('')}</table></div></section>`:''}
+  ${items.length?`<section class="sec"><h3>${IC.bag}준비물 <span class="sec-sub">${done}/${items.length} 챙김</span></h3><div class="bar"><i style="width:${Math.round(done/items.length*100)}%"></i></div>
+    ${items.map((it,i)=>`<label class="check ${ck[it]?'done':''}"><input type="checkbox" id="chk-${i}" data-chk="${h(it)}" ${ck[it]?'checked':''}><span>${h(it)}</span></label>`).join('')}<p class="hint" style="margin:6px 0 0">체크는 이 휴대폰에만 저장돼요.</p></section>`:''}
+  ${(e.duties||[]).length?`<section class="sec"><h3>${IC.hand}당번</h3>${e.duties.map(d=>{const c=childName();return `<div class="duty ${c&&d.who.includes(c)?'mine':''}"><span class="role">${ICON[d.role]||'⭐'} ${h(d.role)}</span><div style="min-width:0"><span class="who">${h(d.who)}</span>${d.memo?`<small>${h(d.memo)}</small>`:''}</div></div>`}).join('')}</section>`:''}
+  ${e.notes?`<section class="sec"><h3>${IC.note}공지 · 메모</h3>${notesHtml(e.notes)}</section>`:''}
+  ${manage&&isWeekly(e)?`<section class="sec"><h3>${IC.edit}이 날 수업만 바꾸기 <span class="sec-sub">${h(fmtDate(o.orig))}</span></h3><div class="actions" style="margin-top:0">
       ${ex?`<button class="btn wide" id="occReset" data-id="${h(e.id)}" data-orig="${o.orig}">원래대로 되돌리기</button>`:`<button class="btn" id="occCancel" data-id="${h(e.id)}" data-orig="${o.orig}">이 날 휴강</button><button class="btn" id="occMove" data-id="${h(e.id)}" data-orig="${o.orig}">날짜·시간 변경</button>`}
-    </div></div>`:''}
+    </div></section>`:''}
   ${personal?'':audienceHtml(e,o)}
   <div class="actions">
     ${personal?'':`<button class="btn primary wide" id="copyNotice" data-id="${h(e.id)}" data-date="${date}" style="background:var(--navy)">카톡 공지 복사</button>`}
@@ -802,7 +864,7 @@ function moveHtml(s){
   <form id="moveForm"><div class="row"><div class="field"><label for="mv-date">바뀐 날짜</label><input id="mv-date" type="date" required value="${h(s.orig)}"></div>
   <div class="field"><label for="mv-start">시작</label><input id="mv-start" type="time" value="${h(e.start||'')}"></div><div class="field"><label for="mv-end">종료</label><input id="mv-end" type="time" value="${h(e.end||'')}"></div></div>
   <div class="field"><label for="mv-note">사유 · 메모</label><input id="mv-note" placeholder="예: 구장 사정으로 일요일 오전으로 이동"></div>
-  <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn primary" type="submit">변경 저장</button></div></form>`;
+  <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn" type="submit" name="act" value="save">저장만</button></div><button class="btn primary" type="submit" name="act" value="notify" style="width:100%;margin-top:8px">저장하고 변경 공지 보내기</button></form>`;
 }
 function blank(date,type){return {id:'',type:type||'class',title:type==='match'?'':'정규 수업',date:date||TODAY,gather:'',start:'',end:'',place:type==='match'?'':'수지위너스 구장',addr:type==='match'?'':TEAM.addr,parking:'',weather:'',uniform:'',items:[],duties:[],matches:[],notes:'',repeat:(type||'class')==='class'?'weekly':'',until:'',exceptions:{}}}
 function formHtml(s){
@@ -830,7 +892,8 @@ function formHtml(s){
     ${cls||e.type==='off'?'':`<div class="field"><label for="f-duties">당번 (한 줄에 하나: 역할 - 이름 - 메모)</label><textarea id="f-duties" placeholder="음료 - 전이안&#10;쓰레기 - 정도아 - 종량제 봉투 2">${h((e.duties||[]).map(d=>[d.role,d.who,d.memo].filter(Boolean).join(' - ')).join('\n'))}</textarea></div>
     <div class="field"><label for="f-matches">우리 팀 경기 (한 줄에 하나: 시간 | 구장 | 상대 | 결과)</label><textarea id="f-matches" placeholder="09:18 | D구장 | 오르카FC | 2-1">${h((e.matches||[]).map(m=>[m.time,m.field,m.opp,m.score].filter((x,i)=>i<3||x).join(' | ')).join('\n'))}</textarea></div>`}
     <div class="field"><label for="f-notes">공지 · 메모</label><textarea id="f-notes" style="min-height:100px">${h(e.notes)}</textarea></div>
-    <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn primary" type="submit" ${busy?'disabled':''}>저장하고 공유</button></div>
+    <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn" type="submit" name="act" value="save" ${busy?'disabled':''}>저장만</button></div>
+    <button class="btn primary" type="submit" name="act" value="notify" style="width:100%;margin-top:8px" ${busy?'disabled':''}>저장하고 공지 보내기 (대상 그룹에 알림)</button>
   </form>`;
 }
 function pformHtml(s){
@@ -1000,7 +1063,6 @@ document.addEventListener('click',async ev=>{
     const now2=new Date().toISOString();
     const patch={meta:{adminId:ME.id,createdAt:now2,team:TEAM.name}};patch['users/'+ME.id]={name,role:'admin',at:now2};
     if(!EV.length){try{const a=await (await fetch('events.json',{cache:'no-store'})).json();(a||[]).forEach(e=>{const c=Object.assign({},e);const id=c.id;delete c.id;if(id)patch['events/'+id]=c})}catch(e){}}
-    if(!GR.length){patch['groups/g-7-elite']={name:'7세 선수반',order:1};patch['groups/g-7-hobby']={name:'7세 취미반',order:2}}
     run(()=>dbPatch(patch),name+'님, 관리자로 등록했어요');return}
   if(t.id==='obCode'){const c=(val('ob-code')||'').toUpperCase();if(!INV.find(x=>x.id===c)){toast('초대 코드를 찾을 수 없어요');return}V.ob.code=c;render();return}
   if(t.id==='obCodeClear'){V.ob.code='';INVITE='';render();return}
@@ -1051,7 +1113,9 @@ document.addEventListener('click',async ev=>{
   if(t.dataset.gedit){V.sheet={kind:'group',draft:Object.assign({},GR.find(g=>g.id===t.dataset.gedit))};render();return}
   if(t.dataset.gadd){V.sheet={kind:'player',draft:{id:'',name:'',number:'',birth:'',groupIds:[t.dataset.gadd],memo:''}};render();return}
   if(t.id==='gDel'){const id=t.dataset.id;V.sheet=null;run(()=>dbDel('groups',id),'그룹을 삭제했어요');return}
-  if(t.id==='notify'){
+  if(t.id==='notify'){if(true){const e=findEv(t.dataset.id);const o=findOcc(e.id,t.dataset.date,t.dataset.orig)||{e,date:t.dataset.date,orig:t.dataset.orig};
+    const kind=o.cancel?(o.movedTo?'change':'cancel'):o.moved?'change':(NT.some(n=>n.eventId===e.id&&n.date===o.date)?'update':'new');
+    run(()=>sendNotice(e,o.date,o.orig||o.date,kind),groupsLabel(e.groupIds)+' 선수·부모님 '+familyCount(e.groupIds)+'명에게 알림을 보냈어요');return}
     const e=findEv(t.dataset.id);const o=findOcc(e.id,t.dataset.date,t.dataset.orig)||{e,date:t.dataset.date,orig:t.dataset.orig};
     const kind=o.cancel?(o.movedTo?'change':'cancel'):o.moved?'change':(NT.some(n=>n.eventId===e.id&&n.date===o.date)?'update':'new');
     const n={eventId:e.id,date:o.date,orig:o.orig||o.date,title:e.title,type:e.type,kind,groupIds:e.groupIds||[],sentAt:new Date().toISOString(),sentBy:ME.id||''};
@@ -1090,7 +1154,7 @@ document.addEventListener('change',ev=>{
     run(()=>dbPut('users/'+id+'/role',t.value),(u.name||'멤버')+' → '+ROLES[t.value]);return}
 });
 document.addEventListener('submit',ev=>{
-  ev.preventDefault();const id0=ev.target.id;
+  ev.preventDefault();const id0=ev.target.id;const act=(ev.submitter&&ev.submitter.value)||'save';
   if(id0==='evForm'){
     if(!canManage()){toast('팀 일정은 감독·코치만 등록할 수 있어요');return}
     const f=readForm();if(!f.title||!f.date){toast('제목과 날짜를 넣어주세요');return}
@@ -1099,7 +1163,8 @@ document.addEventListener('submit',ev=>{
     const doc=Object.assign({},editing?findEv(id):{},f,{exceptions:editing?(findEv(id).exceptions||{}):{},updatedAt:new Date().toISOString(),updatedBy:ME.id||''});
     if(!editing){doc.createdBy=ME.id||''}
     const nd=pd(f.date);V.y=nd.getFullYear();V.m=nd.getMonth();V.sel=f.date;V.tab='cal';V.sheet={kind:'detail',id,date:f.date,orig:f.date};
-    run(()=>dbSet('events',id,doc),'저장했어요. 아래 공지 보내기를 누르면 대상 그룹에 알림이 가요');return}
+    if(act==='notify') run(async()=>{await dbSet('events',id,doc);await sendNotice(Object.assign({},doc,{id}),f.date,f.date,editing?'update':'new')},'저장하고 '+groupsLabel(f.groupIds)+'에 공지를 보냈어요');
+    else run(()=>dbSet('events',id,doc),'저장했어요. 공지는 보내지 않았어요');return}
   if(id0==='pForm'){
     const d=V.sheet.draft;const f={id:d.id||newId('p'),type:'personal',title:val('p-title'),date:val('p-date'),start:val('p-start'),end:val('p-end'),place:val('p-place'),items:val('p-items').split(',').map(x=>x.trim()).filter(Boolean),notes:document.getElementById('p-notes').value,repeat:''};
     if(!f.title||!f.date){toast('제목과 날짜를 넣어주세요');return}
@@ -1110,7 +1175,9 @@ document.addEventListener('submit',ev=>{
     const toDate=val('mv-date');if(!toDate){toast('바뀐 날짜를 넣어주세요');return}
     ex[s.orig]={status:'moved',toDate,toStart:val('mv-start'),toEnd:val('mv-end'),note:val('mv-note')};
     V.sheet={kind:'detail',id:e.id,date:toDate,orig:s.orig};
-    run(()=>dbSet('events',e.id,Object.assign({},e,{exceptions:ex})),md(s.orig)+' 수업을 '+md(toDate)+'로 옮겼어요');return}
+    const ne=Object.assign({},e,{exceptions:ex});
+    if(act==='notify') run(async()=>{await dbSet('events',e.id,ne);await sendNotice(ne,s.orig,s.orig,'change')},md(s.orig)+' 수업을 '+md(toDate)+'로 옮기고 공지를 보냈어요');
+    else run(()=>dbSet('events',e.id,ne),md(s.orig)+' 수업을 '+md(toDate)+'로 옮겼어요');return}
   if(id0==='gForm'){
     if(!canManage()){toast('그룹은 감독·코치만 만들 수 있어요');return}
     const d=V.sheet.draft;const name=val('g-name');if(!name){toast('그룹 이름을 넣어주세요');return}
