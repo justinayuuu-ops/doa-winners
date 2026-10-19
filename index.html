@@ -104,7 +104,17 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .bwrap.t-class.gray,.bwrap.gray{color:var(--off)}
 .bwrap.lg{width:16px;height:16px;flex:none}
 .day.other{opacity:.35}
-.day.sel{background:var(--pitch-soft);box-shadow:inset 0 0 0 2px var(--pitch)}
+.day.sel{box-shadow:inset 0 0 0 2px var(--pitch)}
+.day.sel:not([class*="ev-"]){background:var(--pitch-soft)}
+/* 일정 있는 날: 칸 전체를 종류 색으로 연하게, 숫자 밑에 ⚽ */
+.day.ev-class{background:color-mix(in srgb,#0F62D6 15%,transparent)}
+.day.ev-match{background:color-mix(in srgb,#E01B2F 15%,transparent)}
+.day.ev-match .n i{color:#E01B2F}
+.day.ev-personal{background:color-mix(in srgb,#7A35E8 15%,transparent)}
+.day.ev-gray{background:color-mix(in srgb,#7C8794 16%,transparent)}
+.day.ev-gray .emo{filter:grayscale(1);opacity:.55}
+.day .emo{display:block;height:14px;font-size:12px;line-height:14px;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.legend .sw{display:inline-block;width:14px;height:14px;border-radius:4px;flex:none}
 .day.sel .n i{color:var(--pitch)}
 .dayhead{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px));padding:4px 6px;margin-inline:-6px}
 .dayhead.flash{animation:fl 1s ease-out}
@@ -709,8 +719,9 @@ function viewCal(){
     const d=new Date(start);d.setDate(start.getDate()+i);const s=ds(d);const evs=eventsOn(s);
     const live=evs.filter(o=>!o.cancel&&o.e.type!=='off');
     const pri=live.find(o=>o.e.type==='match'||o.e.type==='event')||live.find(o=>o.e.type==='class')||live[0]||evs.find(o=>o.e.type!=='personal')||evs[0];
-    const ball=pri?`<span class="dball bwrap t-${ballCls(pri)}">${BALL}</span>`:'';
-    g+=`<button class="day ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n"><i>${d.getDate()}</i></span>${ball||'<span class="dball"></span>'}${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
+    const ek=pri?(pri.cancel||pri.e.type==='off'?'gray':pri.e.type==='personal'?'personal':(pri.e.type==='match'||pri.e.type==='event')?'match':'class'):'';
+    const ball=pri?'<span class="emo" aria-hidden="true">⚽</span>':'';
+    g+=`<button class="day ${ek?'ev-'+ek:''} ${live.length?'has':''} ${d.getMonth()!==V.m?'other':''} ${s===TODAY?'today':''} ${s===V.sel?'sel':''} ${d.getDay()===0?'sun':''}" data-day="${s}" aria-label="${h(fmtDate(s))}${evs.length?', 일정 '+evs.length+'개':''}"><span class="n"><i>${d.getDate()}</i></span>${ball||'<span class="emo"></span>'}${live.length>1?`<span class="more">+${live.length-1}</span>`:''}</button>`;
   }
   const dayEv=eventsOn(V.sel);
   const un=unreadCount();
@@ -722,7 +733,7 @@ function viewCal(){
   <div class="section-title" style="margin-top:18px"><span>달력</span>${V.y!==now.getFullYear()||V.m!==now.getMonth()?'<button class="btn sm" id="goToday">오늘</button>':''}</div>
   <div class="cal"><div class="cal-head"><button class="iconbtn" id="prevM" aria-label="이전 달">‹</button><h3>${V.y}. ${pad(V.m+1)}</h3><button class="iconbtn" id="nextM" aria-label="다음 달">›</button></div>
     <div class="grid">${g}</div>
-    <div class="legend">${[['class','정규 수업'],['match','대회·시합'],['personal','개인 일정'],['class gray','휴강']].map(k=>`<span><span class="bwrap lg t-${k[0]}">${BALL}</span>${k[1]}</span>`).join('')}</div></div>
+    <div class="legend">${[['#0F62D6','정규 수업'],['#E01B2F','대회·시합'],['#7A35E8','개인 일정'],['#7C8794','휴강']].map(k=>`<span><i class="sw" style="background:color-mix(in srgb,${k[0]} 22%,transparent);box-shadow:inset 0 0 0 1.5px ${k[0]}"></i>${k[1]}</span>`).join('')}</div></div>
   <div class="section-title dayhead" id="dayhead" style="border-radius:10px"><span>${h(fmtDate(V.sel))} 일정</span><button class="btn sm" id="addOnDay">+ 이 날 추가</button></div>
   <div class="list">${dayEv.length?dayEv.map(o=>evRow(o)).join(''):'<div class="empty-box">이 날은 일정이 없어요</div>'}</div>`;
 }
