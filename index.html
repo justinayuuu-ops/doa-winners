@@ -235,6 +235,10 @@ header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .role-slot{flex:none;display:flex;align-items:center}
 .bell{position:relative;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);display:grid;place-items:center;margin-right:8px;padding:0;transition:background .2s,border-color .2s}
 .bell svg{width:20px;height:20px;display:block}
+.bell{width:30px;height:30px;border-width:1px;margin-right:6px}
+.bell svg{width:17px;height:17px}
+.bell.hot{box-shadow:0 0 0 3px color-mix(in srgb,var(--lime) 35%,transparent)}
+.bell .badge{top:-5px;right:-6px}
 .bell.hot{background:var(--lime);border-color:var(--lime);color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--lime) 35%,transparent)}
 .bell.hot svg{animation:wig 1.6s ease-in-out infinite}
 @keyframes wig{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(-12deg)}85%{transform:rotate(10deg)}92%{transform:rotate(-5deg)}}
@@ -340,7 +344,7 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day.today .n{background:var(--navy);box-shadow:none;padding-top:2px}
 .day.today .n i{color:#FFFFFF!important}
 /* 선택한 날짜: 일정 색(파랑·빨강·보라·회색)과 겹치지 않는 위너스 라임 하이라이트 */
-.day.sel,.day.sel.ev-class,.day.sel.ev-match,.day.sel.ev-personal,.day.sel.ev-gray{background:#E6F28A}
+.day.sel,.day.sel.ev-class,.day.sel.ev-match,.day.sel.ev-personal,.day.sel.ev-gray{background:#F1FF7F}
 .legend .lgst svg{display:block;width:16px;height:16px}
 /* 범례 글자를 아이콘과 세로 가운데로: 글자 위아래 여백을 잘라 숫자·한글 몸통 기준으로 맞춤 */
 .legend span{align-items:center;line-height:1}
