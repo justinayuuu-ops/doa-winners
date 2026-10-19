@@ -339,6 +339,16 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day.sel:not(.today) .n{box-shadow:inset 0 0 0 2px var(--pitch)}
 .day.sel:not([class*="ev-"]){background:#FFFFFF}
 .legend .lgst svg{display:block;width:16px;height:16px}
+.kitpick{display:flex;flex-wrap:wrap;gap:6px}
+.kitpick label{position:relative;display:inline-flex}
+.kitpick input{position:absolute;opacity:0;pointer-events:none}
+.kitpick span{display:flex;flex-direction:column;align-items:center;gap:2px;width:52px;padding:6px 0 4px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.kitpick span svg{width:26px;height:26px}
+.kitpick em{font-style:normal;font-size:11px;color:var(--muted)}
+.kitpick .kx{font-style:normal;height:26px;line-height:26px;color:var(--muted)}
+.kitpick input:checked + span{border-color:var(--pitch);background:var(--pitch-soft);box-shadow:inset 0 0 0 1px var(--pitch)}
+.kitpick input:checked + span em{color:var(--pitch)}
+.kitpick input:focus-visible + span{outline:2px solid var(--pitch)}
 .lockline{font-size:12px;color:var(--violet);font-weight:400}
 
 .gate{margin-top:14px;padding:18px}
@@ -626,6 +636,20 @@ const KIT_COLORS=[[/검정|검은|블랙|black/i,'#1C1F24','검정'],[/빨강|�
 function kitColor(txt){for(const [re,c,n] of KIT_COLORS)if(re.test(txt))return {c,n};return null}
 function shirtSvg(c){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 2.2L4 4.6L1.6 10L5.5 11.6V21.6H18.5V11.6L22.4 10L20 4.6L14.7 2.2L12 4.9Z" fill="${c}" stroke="#5A6878" stroke-width="${c==='#FFFFFF'?1.2:0}" stroke-linejoin="round"/><path d="M9.3 2.2L12 4.9L14.7 2.2" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.1"/></svg>`}
 function sockSvg(c){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h7.5v10.2l3.3 3.6a3.6 3.6 0 0 1-.2 5.1l-.2.2a3.6 3.6 0 0 1-5 0L8 15.6z" fill="${c}" stroke="#5A6878" stroke-width="${c==='#FFFFFF'?1.2:0}" stroke-linejoin="round"/><path d="M8 5h7.5M8 7.4h7.5" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/></svg>`}
+const KIT_NAMES=['검정','흰색','빨강','파랑','네이비','노랑','초록','주황','회색'];
+const kitHex=n=>{const k=KIT_COLORS.find(x=>x[2]===n);return k?k[1]:null};
+function detectKit(u){const t=String(u||'');const m1=t.match(/([^\s+,/·]+)\s*(유니폼|상의|저지)/);const m2=t.match(/([^\s+,/·]+)\s*(스타킹|양말|삭스)/);
+  const a=m1&&kitColor(m1[1]),b=m2&&kitColor(m2[1]);return {shirt:a?a.n:'',sock:b?b.n:''}}
+function kitView(e){
+  if(!e.kitShirt&&!e.kitSock) return e.uniform?kitHtml(e.uniform):'';
+  const parts=[];
+  if(e.kitShirt)parts.push(`<span class="kit">${shirtSvg(kitHex(e.kitShirt))}<b>${h(e.kitShirt)} 유니폼</b></span>`);
+  if(e.kitSock)parts.push(`<span class="kit">${sockSvg(kitHex(e.kitSock))}<b>${h(e.kitSock)} 스타킹</b></span>`);
+  return `<div class="kits">${parts.join('')}</div>${e.uniform?`<p class="hint" style="margin:8px 0 0">${h(e.uniform)}</p>`:''}`;
+}
+function kitPicker(name,cur,svgFn){
+  return `<div class="kitpick">${['없음'].concat(KIT_NAMES).map(n=>`<label><input type="radio" name="${name}" id="${name}-${n}" value="${n==='없음'?'':n}" ${(cur||'')===(n==='없음'?'':n)?'checked':''}><span>${n==='없음'?'<i class="kx">–</i>':svgFn(kitHex(n))}<em>${n}</em></span></label>`).join('')}</div>`;
+}
 function kitHtml(u){
   const parts=[];let rest=u;
   const m1=u.match(/([^\s+,/·]+)\s*(유니폼|상의|저지)/);const m2=u.match(/([^\s+,/·]+)\s*(스타킹|양말|삭스)/);
@@ -882,7 +906,7 @@ function detailHtml(s){
   ${!o.cancel?`<section class="sec"><h3>${IC.clock}일시</h3><p class="sec-line">${h(fmtDate(date,true))}</p>${tb.length?`<div class="times" style="grid-template-columns:repeat(${tb.length},minmax(0,1fr))">${tb.map(x=>`<div><small>${x[0]}</small><b>${h(x[1])}</b></div>`).join('')}</div>`:''}</section>`:''}
   ${e.place||e.parking?`<section class="sec"><h3>${IC.pin}장소</h3><dl class="kv">${e.place?`<dt>장소</dt><dd>${h(e.place)}</dd>`:''}${e.addr?`<dt>주소</dt><dd>${h(e.addr)}</dd>`:''}${e.parking?`<dt>주차</dt><dd>${h(e.parking)}</dd>`:''}</dl>
     ${addr?`<div class="links"><a href="https://map.naver.com/p/search/${encodeURIComponent(addr)}" target="_blank" rel="noopener">네이버 지도</a><a href="https://map.kakao.com/?q=${encodeURIComponent(addr)}" target="_blank" rel="noopener">카카오맵</a></div>`:''}</section>`:''}
-  ${e.uniform||e.weather?`<section class="sec"><h3>${IC.shirt}복장 · 날씨</h3>${e.uniform?kitHtml(e.uniform):''}${e.weather?`<p class="sec-line" style="margin-top:8px">${h(e.weather)}</p>`:''}</section>`:''}
+  ${e.uniform||e.weather||e.kitShirt||e.kitSock?`<section class="sec"><h3>${IC.shirt}복장 · 날씨</h3>${kitView(e)}${e.weather?`<p class="sec-line" style="margin-top:8px">${h(e.weather)}</p>`:''}</section>`:''}
   ${(e.matches||[]).length?`<section class="sec"><h3>${IC.ball}경기 시간</h3><div style="overflow-x:auto"><table class="mt">${e.matches.map(m=>`<tr><td class="tm">${h(m.time)}</td><td class="fd">${h(m.field)}</td><td>${/^순위|위전|결승/.test(m.opp)?'':'vs '}${h(m.opp)}</td><td class="sc">${h(m.score)}</td></tr>`).join('')}</table></div></section>`:''}
   ${items.length?`<section class="sec"><h3>${IC.bag}준비물 <span class="sec-sub">${done}/${items.length} 챙김</span></h3><div class="bar"><i style="width:${Math.round(done/items.length*100)}%"></i></div>
     ${items.map((it,i)=>`<label class="check ${ck[it]?'done':''}"><input type="checkbox" id="chk-${i}" data-chk="${h(it)}" ${ck[it]?'checked':''}><span>${h(it)}</span></label>`).join('')}<p class="hint" style="margin:6px 0 0">체크는 이 휴대폰에만 저장돼요.</p></section>`:''}
@@ -926,7 +950,9 @@ function formHtml(s){
     <div class="field"><label for="f-place">장소</label><input id="f-place" value="${h(e.place)}"></div>
     <div class="field"><label for="f-addr">주소 (지도 검색에 써요)</label><input id="f-addr" value="${h(e.addr)}"></div>
     ${cls||e.type==='off'?'':`<div class="field"><label for="f-parking">주차</label><input id="f-parking" value="${h(e.parking)}"></div>`}
-    ${e.type==='off'?'':`<div class="row"><div class="field"><label for="f-uniform">유니폼</label><input id="f-uniform" value="${h(e.uniform)}"></div>
+    ${e.type==='off'?'':`<div class="field"><span class="lbl">유니폼 색</span>${kitPicker('f-shirt',e.kitShirt,shirtSvg)}</div>
+    <div class="field"><span class="lbl">스타킹 색</span>${kitPicker('f-sock',e.kitSock,sockSvg)}</div>
+    <div class="row"><div class="field"><label for="f-uniform">복장 메모 (선택)</label><input id="f-uniform" value="${h(e.uniform)}" placeholder="예: 쌀쌀하면 블랙 이너"></div>
       ${cls?'':`<div class="field"><label for="f-weather">날씨</label><input id="f-weather" value="${h(e.weather)}"></div>`}</div>
     <div class="field"><label for="f-items">준비물 (쉼표나 줄바꿈으로 구분)</label><textarea id="f-items">${h((e.items||[]).join(', '))}</textarea></div>`}
     ${cls||e.type==='off'?'':`<div class="field"><label for="f-duties">당번 (한 줄에 하나: 역할 - 이름 - 메모)</label><textarea id="f-duties" placeholder="음료 - 전이안&#10;쓰레기 - 정도아 - 종량제 봉투 2">${h((e.duties||[]).map(d=>[d.role,d.who,d.memo].filter(Boolean).join(' - ')).join('\n'))}</textarea></div>
@@ -1015,7 +1041,7 @@ function shareText(o){
   if(e.gather)T.push('✅집결시간: '+ap(e.gather),'');
   if(o.start)T.push('✅'+(e.type==='match'?'경기':'수업')+'시간: '+ap(o.start)+(o.end?'-'+o.end:''),'');
   if(e.weather)T.push('✅예상 날씨: '+e.weather,'');
-  if(e.uniform)T.push('✅유니폼: '+e.uniform,'');
+  {const kt=[e.kitShirt?e.kitShirt+' 유니폼':'',e.kitSock?e.kitSock+' 스타킹':''].filter(Boolean).join(', ');const ut=[kt,e.uniform].filter(Boolean).join(' · ');if(ut)T.push('✅유니폼: '+ut,'')}
   if((e.items||[]).length)T.push('✅개인 준비물: '+e.items.join(', '),'');
   if((e.matches||[]).length){T.push('⚽우리 팀 경기');e.matches.forEach(m=>T.push('  '+m.time+' '+m.field+' '+(/^순위|위전|결승/.test(m.opp)?'':'vs ')+m.opp+(m.score?' ('+m.score+')':'')));T.push('')}
   (e.duties||[]).forEach(x=>T.push((ICON[x.role]||'⭐')+x.role+'- '+x.who+(x.memo?' ('+x.memo+')':'')));
@@ -1038,6 +1064,8 @@ function readForm(){
   const du=lines('f-duties');f.duties=du===null?d.duties:du.map(l=>l.split(/\s*-\s*/)).filter(p=>p[0]&&p[1]).map(p=>({role:p[0].trim(),who:p[1].trim(),memo:p.slice(2).join(' - ').trim()}));
   const ma=lines('f-matches');f.matches=ma===null?d.matches:ma.map(l=>l.split('|').map(x=>x.trim())).filter(p=>p[0]).map(p=>({time:p[0]||'',field:p[1]||'',opp:p[2]||'',score:p[3]||''}));
   const gb=document.querySelectorAll('input[name="f-g"]');f.groupIds=gb.length?[...gb].filter(x=>x.checked).map(x=>x.value):(d.groupIds||[]);
+  const ks=document.querySelector('input[name="f-shirt"]:checked'),kk=document.querySelector('input[name="f-sock"]:checked');
+  f.kitShirt=ks?ks.value:(d.kitShirt||'');f.kitSock=kk?kk.value:(d.kitSock||'');
   f.repeat=type==='class'?'weekly':'';
   if(type!=='class')f.until='';
   if(type==='class'){f.gather=f.gather||'';}
@@ -1086,6 +1114,7 @@ document.addEventListener('click',async ev=>{
     if(merged.place==='수지위너스 구장'){merged.place='';merged.addr=''}
     for(const k in p){if(Array.isArray(p[k])?p[k].length:p[k])merged[k]=p[k]}
     if(!merged.title&&p.notes)merged.title=p.notes.split('\n')[0].slice(0,40);
+    if(p.uniform){const k=detectKit(p.uniform);if(k.shirt)merged.kitShirt=k.shirt;if(k.sock)merged.kitSock=k.sock}
     V.sheet.draft=merged;render();
     const n=Object.keys(p).filter(k=>k!=='notes').length;toast(n?n+'개 항목을 채웠어요. 확인 후 저장해 주세요':'알아본 항목이 없어요. 직접 입력해 주세요');return}
   if(t.id==='addPlayer'||t.id==='addPlayer2'){V.sheet={kind:'player',draft:{id:'',name:'',number:'',birth:'',groupIds:GR.length===1?[GR[0].id]:[],memo:''}};render();return}
