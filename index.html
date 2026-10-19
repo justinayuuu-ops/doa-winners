@@ -349,6 +349,8 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 /* 범례 글자를 아이콘과 세로 가운데로: 글자 위아래 여백을 잘라 숫자·한글 몸통 기준으로 맞춤 */
 .legend span{align-items:center;line-height:1}
 .legend .lgst{display:block;flex:none}
+.legend{align-items:center}
+.legend .lsep{display:block;width:1.5px;height:12px;border-radius:1px;background:#B7C3D1;margin:0 -4px}
 .legend .lt{font-style:normal;display:block;line-height:1;text-box:trim-both cap alphabetic}
 @supports not (text-box:trim-both cap alphabetic){.legend .lt{transform:translateY(.08em)}}
 .kitpick{display:flex;flex-wrap:wrap;gap:6px}
@@ -798,7 +800,7 @@ function viewCal(){
   <div class="section-title" style="margin-top:18px"><span>달력</span>${V.y!==now.getFullYear()||V.m!==now.getMonth()?'<button class="btn sm" id="goToday">오늘</button>':''}</div>
   <div class="cal"><div class="cal-head"><button class="iconbtn" id="prevM" aria-label="이전 달">‹</button><h3>${V.y}. ${pad(V.m+1)}</h3><button class="iconbtn" id="nextM" aria-label="다음 달">›</button></div>
     <div class="dows">${dh}</div><div class="grid">${g}</div>
-    <div class="legend">${[['trophy','대회·시합'],['ball','정규 수업'],['star','개인 일정'],['ballgray','휴강']].map(k=>`<span><span class="lgst">${STK[k[0]]}</span><em class="lt">${k[1]}</em></span>`).join('')}</div></div>
+    <div class="legend">${[['trophy','대회·시합'],['ball','정규 수업'],['ballgray','휴강'],['star','개인 일정',1]].map(k=>`${k[2]?'<i class="lsep" aria-hidden="true"></i>':''}<span><span class="lgst">${STK[k[0]]}</span><em class="lt">${k[1]}</em></span>`).join('')}</div></div>
   <div class="section-title dayhead" id="dayhead"><span>${h(fmtDate(V.sel))} 일정</span><button class="btn sm" id="addOnDay">+ 이 날 추가</button></div>
   <div class="list">${dayEv.length?dayEv.map(o=>evRow(o)).join(''):'<div class="empty-box">이 날은 일정이 없어요</div>'}</div>`;
 }
