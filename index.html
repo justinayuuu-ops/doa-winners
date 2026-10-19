@@ -94,8 +94,6 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .bwrap.t-class.gray,.bwrap.gray{color:var(--off)}
 .bwrap.lg{width:16px;height:16px;flex:none}
 .day.other{opacity:.35}
-.day.sel{box-shadow:inset 0 0 0 2px var(--pitch)}
-.day.sel:not([class*="ev-"]){background:var(--pitch-soft)}
 /* 일정 있는 날: 칸 전체를 종류 색으로 연하게, 숫자 밑에 ⚽ */
 .day.ev-class{background:color-mix(in srgb,#0F62D6 11%,transparent)}
 .day.ev-match{background:color-mix(in srgb,#E01B2F 11%,transparent)}
@@ -335,9 +333,12 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day .emo .st,.day .emo svg{display:block;width:17px;height:17px}
 .day.today .n{background:var(--navy);box-shadow:inset 0 0 0 2.5px var(--lime);padding-top:2px}
 .day.today .n i{color:#FFFFFF!important}
-/* 선택한 날짜: 칸 아래 테두리를 굵게 */
-.day.sel{box-shadow:inset 0 -3px 0 var(--navy)!important}
-.day.sel:not([class*="ev-"]){background:#FFFFFF}
+/* 선택한 날짜: 선 없이 칸 배경을 한 톤 진하게 */
+.day.sel{background:#DCEAFC}
+.day.sel.ev-class{background:#9FC4F5}
+.day.sel.ev-match{background:#F5A9B5}
+.day.sel.ev-personal{background:#C9B3F7}
+.day.sel.ev-gray{background:#C7CED7}
 .legend .lgst svg{display:block;width:16px;height:16px}
 .kitpick{display:flex;flex-wrap:wrap;gap:6px}
 .kitpick label{position:relative;display:inline-flex}
