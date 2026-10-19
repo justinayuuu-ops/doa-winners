@@ -102,7 +102,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .day.ev-gray{background:color-mix(in srgb,#7C8794 13%,transparent)}
 
 .legend .sw{display:inline-block;width:14px;height:14px;border-radius:4px;flex:none}
-.dayhead{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px));padding:4px 6px;margin-inline:-6px}
+.dayhead{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px))}
 .dayhead.flash{animation:fl 1s ease-out}
 @keyframes fl{from{background:var(--pitch-soft)}to{background:transparent}}
 @media (prefers-reduced-motion: reduce){.dayhead.flash{animation:none}}
@@ -299,12 +299,18 @@ header.top .brand h1{font-size:24px;line-height:1;white-space:nowrap;margin:0}
 .gpick label{display:inline-flex}
 .gpick span{white-space:nowrap}
 /* 흰 바탕에서 영역이 또렷하게: 카드마다 테두리 + 아주 옅은 그림자, 카드 안 작은 블록은 연회색 */
-.card,.sec,.ev,.gcard,.cal,.loading,.empty-box,.player,.choice button{border:1px solid var(--line);box-shadow:0 1px 3px rgba(18,40,70,.06)}
+.card,.sec,.ev,.gcard,.loading,.empty-box,.player,.choice button{border:1.5px solid #C3CFDD;box-shadow:0 2px 6px rgba(18,40,70,.09)}
+/* 영역 구분: 달력 카드와 그 날 일정 목록을 각각 뚜렷한 상자로 */
+.cal{box-shadow:0 3px 10px rgba(18,85,138,.14)!important}
+.dayhead + .list{background:#F2F6FB;border:1.5px solid #C3CFDD;border-radius:16px;padding:10px;box-shadow:inset 0 1px 2px rgba(18,40,70,.05)}
+.dayhead + .list .empty-box{background:#fff}
 .empty-box{border-style:dashed;box-shadow:none}
 .sec h3{border-bottom:2px solid var(--pitch-soft)}
 .sec .times div,.kit,.gcard .roster .player,.times div{background:var(--tint);border:0;box-shadow:none}
-.section-title{padding-left:10px;border-left:4px solid var(--pitch);line-height:1.2}
-.dayhead.section-title{border-left-color:var(--pitch)}
+.section-title{line-height:1.2;margin-top:28px}
+/* 제목 앞 파란 막대: 오른쪽 버튼 높이와 상관없이 제목 글자 높이에 맞춘 같은 크기 */
+.section-title>span:first-child{position:relative;padding-left:12px}
+.section-title>span:first-child::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:18px;border-radius:2px;background:var(--pitch)}
 nav.tabs{background:#FFFFFF;box-shadow:0 -2px 10px rgba(18,40,70,.06)}
 header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .member{border-bottom-color:var(--line)}
