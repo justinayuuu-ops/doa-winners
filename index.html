@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#12558A">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
 <meta name="format-detection" content="telephone=no,date=no,address=no,email=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -18,34 +19,23 @@
 @font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Regular.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Bold.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Bold.woff2") format("woff2");font-weight:600 700;font-style:normal;font-display:swap}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{background:#EEF2F7}
+html{background:#FFFFFF}
 body{margin:0}
 img{max-width:100%}[hidden]{display:none!important}
 </style>
 <style id="css">
 /* CI: Suji Winners emblem navy + sky blue + laurel lime. Layout: one-column phone app. Sticky team header, month grid card, bottom tab bar, bottom sheets for detail & edit. */
 :root{
-  --bg:#EEF2F7; --surface:#FFFFFF; --ink:#121C27; --muted:#5A6878; --line:#D5DEE8;
+  --bg:#FFFFFF; --surface:#F3F6FA; --ink:#121C27; --muted:#5A6878; --line:#D5DEE8;
   --pitch:#1474D4; --pitch-soft:#E0EDFB; --kit:#D3263B; --kit-soft:#FBE1E4;
   --gold:#B97800; --gold-soft:#FBEFD3; --off:#7A8590; --off-soft:#E6EAF0;
   --navy:#12558A; --on-navy:#FFFFFF; --lime:#D2EC2C;
-  --shadow:0 6px 24px rgba(18,40,70,.10);
+  --shadow:0 1px 2px rgba(18,40,70,.06),0 0 0 1px rgba(18,40,70,.05);
+  color-scheme:light;
   --f-round:"Jua","Kakao Small Sans",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,"Malgun Gothic",sans-serif;
   --f-display:var(--f-round);
   --f-body:var(--f-round);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0C121A; --surface:#151E29; --ink:#E5ECF4; --muted:#93A2B3; --line:#263342;
-  --pitch:#55A8FF; --pitch-soft:#132A44; --kit:#FF5D6E; --kit-soft:#3A1A1F;
-  --gold:#F0B23A; --gold-soft:#3A2D12; --off:#96A1AD; --off-soft:#222C38;
-  --navy:#124A78; --on-navy:#FFFFFF; --lime:#D7F03A;
-  --shadow:0 6px 24px rgba(0,0,0,.4); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0C121A; --surface:#151E29; --ink:#E5ECF4; --muted:#93A2B3; --line:#263342;
-  --pitch:#55A8FF; --pitch-soft:#132A44; --kit:#FF5D6E; --kit-soft:#3A1A1F;
-  --gold:#F0B23A; --gold-soft:#3A2D12; --off:#96A1AD; --off-soft:#222C38;
-  --navy:#124A78; --on-navy:#FFFFFF; --lime:#D7F03A;
-  --shadow:0 6px 24px rgba(0,0,0,.4); color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-text-size-adjust:100%;font-size:15px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -79,11 +69,11 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .next button{background:var(--on-navy);color:var(--navy);white-space:nowrap}
 .next.empty{grid-template-columns:minmax(0,1fr)}
 .next.empty .dd{color:var(--on-navy);font-size:15px;border:0;text-align:left;padding:0}
-.cal{background:var(--surface);border-radius:18px;padding:8px 8px 6px;box-shadow:var(--shadow)}
+.cal{background:#FFFFFF;border:1px solid var(--line);border-radius:18px;padding:8px 8px 6px}
 .cal-head{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 6px}
 .cal-head h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:20px;font-variant-numeric:tabular-nums}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;font-size:18px;line-height:1;flex:none}
-.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px 2px}
 .dow{font-size:11px;font-weight:400;text-align:center;color:var(--muted);padding-bottom:2px}
 .dow.sat{color:var(--pitch)}
 .dow.sun,.day.sun .n i{color:var(--kit)}
@@ -206,8 +196,6 @@ body:has(.overlay) header.top{z-index:21}
 
 /* roles, personal events, roster */
 :root{--violet:#7A4FD6;--violet-soft:#EEE7FB}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--violet:#B497FF;--violet-soft:#2A2140}}
-:root[data-theme="dark"]{--violet:#B497FF;--violet-soft:#2A2140}
 .t-personal{--c:var(--violet);--cs:var(--violet-soft)}
 .pill.role-admin{background:var(--navy);color:var(--on-navy)}
 .pill.role-director,.pill.role-coach{background:var(--pitch-soft);color:var(--pitch)}
