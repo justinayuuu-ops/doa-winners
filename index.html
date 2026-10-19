@@ -337,7 +337,8 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day.today .n{background:var(--navy);box-shadow:inset 0 0 0 2.5px var(--lime);padding-top:2px}
 .day.today .n i{color:#FFFFFF!important}
 .day.sel{box-shadow:none}
-.day.sel:not(.today) .n{box-shadow:inset 0 0 0 2px var(--pitch)}
+/* 선택한 날짜: 숫자에 딱 맞는 작은 테두리 (칸 배치는 그대로) */
+.day.sel:not(.today) .n i{padding:3px 3px 3px;border-radius:5px;box-shadow:0 0 0 1.5px var(--pitch)}
 .day.sel:not([class*="ev-"]){background:#FFFFFF}
 .legend .lgst svg{display:block;width:16px;height:16px}
 .kitpick{display:flex;flex-wrap:wrap;gap:6px}
