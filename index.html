@@ -325,16 +325,17 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day{background:#FFFFFF;border-radius:0;min-height:44px;height:44px;padding:2px 1px;gap:1px;justify-content:center;box-shadow:none}
 .day.other{opacity:1;background:#FAFCFE}
 .day.other .n i{opacity:.35}
-.day.ev-class{background:#D9E9FD;box-shadow:inset 0 -3px 0 #2F7DE1}
-.day.ev-match{background:#FCDDE2;box-shadow:inset 0 -3px 0 #E0303F}
-.day.ev-personal{background:#EBE0FD;box-shadow:inset 0 -3px 0 #8250E6}
-.day.ev-gray{background:#E7EAEE;box-shadow:inset 0 -3px 0 #9AA3AD}
+.day.ev-class{background:#CFE3FC}
+.day.ev-match{background:#FBD3D9}
+.day.ev-personal{background:#E4D7FC}
+.day.ev-gray{background:#E3E7EC}
 .day .n{width:25px;height:23px;border-radius:8px;font-size:14px;line-height:14px}
-.day .emo{width:17px;height:17px}
+.day .emo{width:17px;height:17px;margin-top:-3px}
+.day{gap:0}
 .day .emo .st,.day .emo svg{display:block;width:17px;height:17px}
 .day.today .n{background:var(--navy);box-shadow:inset 0 0 0 2.5px var(--lime);padding-top:2px}
 .day.today .n i{color:#FFFFFF!important}
-.day.sel:not([class*="ev-"]){box-shadow:none}
+.day.sel{box-shadow:none}
 .day.sel:not(.today) .n{box-shadow:inset 0 0 0 2px var(--pitch)}
 .day.sel:not([class*="ev-"]){background:#FFFFFF}
 .legend .lgst svg{display:block;width:16px;height:16px}
