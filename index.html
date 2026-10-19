@@ -104,7 +104,6 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .day.ev-gray{background:color-mix(in srgb,#7C8794 13%,transparent)}
 
 .legend .sw{display:inline-block;width:14px;height:14px;border-radius:4px;flex:none}
-.day.sel .n i{color:var(--pitch)}
 .dayhead{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px));padding:4px 6px;margin-inline:-6px}
 .dayhead.flash{animation:fl 1s ease-out}
 @keyframes fl{from{background:var(--pitch-soft)}to{background:transparent}}
@@ -336,9 +335,8 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day .emo .st,.day .emo svg{display:block;width:17px;height:17px}
 .day.today .n{background:var(--navy);box-shadow:inset 0 0 0 2.5px var(--lime);padding-top:2px}
 .day.today .n i{color:#FFFFFF!important}
-.day.sel{box-shadow:none}
-/* 선택한 날짜: 숫자에 딱 맞는 작은 테두리 (칸 배치는 그대로) */
-.day.sel:not(.today) .n i{padding:3px 3px 3px;border-radius:5px;box-shadow:0 0 0 1.5px var(--pitch)}
+/* 선택한 날짜: 칸 아래 테두리를 굵게 */
+.day.sel{box-shadow:inset 0 -3px 0 var(--navy)!important}
 .day.sel:not([class*="ev-"]){background:#FFFFFF}
 .legend .lgst svg{display:block;width:16px;height:16px}
 .kitpick{display:flex;flex-wrap:wrap;gap:6px}
