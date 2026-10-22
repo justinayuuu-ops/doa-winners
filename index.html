@@ -363,6 +363,7 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .kitpick input:checked + span{border-color:var(--pitch);background:var(--pitch-soft);box-shadow:inset 0 0 0 1px var(--pitch)}
 .kitpick input:checked + span em{color:var(--pitch)}
 .kitpick input:focus-visible + span{outline:2px solid var(--pitch)}
+.row2c{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 8px}
 .lockline{font-size:12px;color:var(--violet);font-weight:400}
 
 .gate{margin-top:14px;padding:18px}
@@ -939,8 +940,8 @@ function detailHtml(s){
 function moveHtml(s){
   const e=findEv(s.id);
   return `<div class="sheet-head"><div><h2>수업 변경</h2><div class="muted">${h(e.title)} · 원래 ${h(fmtDate(s.orig))} ${h(e.start||'')}</div></div><button class="iconbtn" data-close aria-label="닫기">✕</button></div>
-  <form id="moveForm"><div class="row"><div class="field"><label for="mv-date">바뀐 날짜</label><input id="mv-date" type="date" required value="${h(s.orig)}"></div>
-  <div class="field"><label for="mv-start">시작</label><input id="mv-start" type="time" value="${h(e.start||'')}"></div><div class="field"><label for="mv-end">종료</label><input id="mv-end" type="time" value="${h(e.end||'')}"></div></div>
+  <form id="moveForm"><div class="field"><label for="mv-date">바뀐 날짜</label><input id="mv-date" type="date" required value="${h(s.orig)}"></div>
+  <div class="row2c"><div class="field"><label for="mv-start">시작</label><input id="mv-start" type="time" value="${h(e.start||'')}"></div><div class="field"><label for="mv-end">종료</label><input id="mv-end" type="time" value="${h(e.end||'')}"></div></div>
   <div class="field"><label for="mv-note">사유 · 메모</label><input id="mv-note" placeholder="예: 구장 사정으로 일요일 오전으로 이동"></div>
   <div class="actions"><button class="btn" type="button" data-close>취소</button><button class="btn" type="submit" name="act" value="save">저장만</button></div><button class="btn primary" type="submit" name="act" value="notify" style="width:100%;margin-top:8px">저장하고 변경 공지 보내기</button></form>`;
 }
@@ -981,8 +982,8 @@ function pformHtml(s){
   return `<div class="sheet-head"><div><h2>${s.editing?'개인 일정 수정':'새 개인 일정'}</h2><div class="lockline">🔒 이 휴대폰에만 저장돼서 나만 봐요</div></div><button class="iconbtn" data-close aria-label="닫기">✕</button></div>
   <form id="pForm" autocomplete="off">
     <div class="field"><label for="p-title">제목</label><input id="p-title" required value="${h(e.title)}" placeholder="예: 개인 레슨, 병원"></div>
-    <div class="row"><div class="field"><label for="p-date">날짜</label><input id="p-date" type="date" required value="${h(e.date)}"></div>
-      <div class="field"><label for="p-start">시작</label><input id="p-start" type="time" value="${h(e.start)}"></div><div class="field"><label for="p-end">종료</label><input id="p-end" type="time" value="${h(e.end)}"></div></div>
+    <div class="field"><label for="p-date">날짜</label><input id="p-date" type="date" required value="${h(e.date)}"></div>
+    <div class="row2c"><div class="field"><label for="p-start">시작</label><input id="p-start" type="time" value="${h(e.start)}"></div><div class="field"><label for="p-end">종료</label><input id="p-end" type="time" value="${h(e.end)}"></div></div>
     <div class="field"><label for="p-place">장소</label><input id="p-place" value="${h(e.place)}"></div>
     <div class="field"><label for="p-items">챙길 것 (쉼표로 구분)</label><input id="p-items" value="${h((e.items||[]).join(', '))}"></div>
     <div class="field"><label for="p-notes">메모</label><textarea id="p-notes">${h(e.notes)}</textarea></div>
