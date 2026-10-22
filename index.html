@@ -364,6 +364,11 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .kitpick input:checked + span em{color:var(--pitch)}
 .kitpick input:focus-visible + span{outline:2px solid var(--pitch)}
 .row2c{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 8px}
+.copyp{display:flex;flex-direction:column;gap:4px;background:var(--pitch-soft);border-radius:12px;padding:10px 12px;margin:6px 0 4px}
+.copyp label{font-size:12px;color:var(--pitch)}
+.copyp select{width:100%;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.rpt{background:var(--tint);border-radius:12px;padding:2px 12px 10px;margin-top:8px}
+.dpick span{min-width:38px;text-align:center;padding:7px 0}
 .lockline{font-size:12px;color:var(--violet);font-weight:400}
 
 .gate{margin-top:14px;padding:18px}
@@ -489,7 +494,13 @@ function addDays(s,n){const d=pd(s);d.setDate(d.getDate()+n);return ds(d)}
 function allEvents(){return EV.filter(canSee).concat(PERSONAL)}
 function hasOff(date,ev){const eg=(ev&&ev.groupIds)||[];return EV.some(x=>x.type==='off'&&x.date===date&&(!(x.groupIds||[]).length||!eg.length||x.groupIds.some(g=>eg.includes(g))))}
 const isWeekly=e=>e.repeat==='weekly';
-function occurs(e,date){return isWeekly(e)&&date>=e.date&&(!e.until||date<=e.until)&&dow(date)===dow(e.date)}
+const wkDows=e=>{const a=arr(e.dows).map(Number);return a.length?a:[dow(e.date)]};
+const weekNo=s=>{const d=pd(s);d.setDate(d.getDate()-d.getDay());return Math.round(d.getTime()/6048e5)};
+function occurs(e,date){if(!isWeekly(e)||date<e.date||(e.until&&date>e.until))return false;
+  if(!wkDows(e).includes(dow(date)))return false;
+  const ev=+e.every||1;return ev<=1||((weekNo(date)-weekNo(e.date))%ev===0)}
+const DOW_ORDER=[1,2,3,4,5,6,0];
+function wkLabel(e){const ds=DOW_ORDER.filter(d=>wkDows(e).includes(d)).map(d=>DOW[d]).join('·');return ((+e.every||1)>1?e.every+'주마다 ':'매주 ')+ds+'요일'}
 /* occurrence: {e,date,orig,cancel,moved,movedTo,start,end,note} */
 function eventsOn(date){
   const out=[];
@@ -770,7 +781,7 @@ function occSub(o){
   if(o.movedTo) return md(o.movedTo)+'로 이동'+(o.note?' · '+o.note:'');
   if(o.cancel) return (o.offDay?'전체 휴강':'휴강')+(o.note?' · '+o.note:'');
   const time=e.gather?'집결 '+e.gather:(o.start?o.start+(o.end?'–'+o.end:''):'');
-  return [canManage()&&(e.groupIds||[]).length?groupsLabel(e.groupIds):'',o.moved?md(o.orig)+' 수업 변경':'',e.place,time,isWeekly(e)&&!o.moved?'매주 '+DOW[dow(e.date)]+'요일':'',e.type==='personal'?'나만 보기':''].filter(Boolean).join(' · ')||(e.notes||'').split('\n')[0];
+  return [canManage()&&(e.groupIds||[]).length?groupsLabel(e.groupIds):'',o.moved?md(o.orig)+' 수업 변경':'',e.place,time,isWeekly(e)&&!o.moved?wkLabel(e):'',e.type==='personal'?'나만 보기':''].filter(Boolean).join(' · ')||(e.notes||'').split('\n')[0];
 }
 function evRow(o,subOverride){
   const e=o.e,d=pd(o.date),t=e.gather||o.start||'';
@@ -914,7 +925,7 @@ function detailHtml(s){
   const status=o.movedTo?`이 날 수업은 ${fmtDate(o.movedTo)}로 이동했어요`:o.cancel?(o.offDay?'전체 휴강일이라 수업이 없어요':'이 날은 휴강이에요'):o.moved?`${fmtDate(o.orig)} 수업이 이 날로 변경됐어요`:'';
   const ex=(e.exceptions||{})[o.orig];
   const manage=canManage()&&!personal;
-  return `<div class="sheet-head t-${e.type}"><div style="min-width:0"><span class="chip">${TYPES[e.type]}${isWeekly(e)?' · 매주 '+DOW[dow(e.date)]+'요일':''}</span>
+  return `<div class="sheet-head t-${e.type}"><div style="min-width:0"><span class="chip">${TYPES[e.type]}${isWeekly(e)?' · '+wkLabel(e):''}</span>
     <h2>${h(e.title)}</h2><div class="muted">${h(fmtDate(date,true))} · ${dday(date)}</div>${personal?'<div class="lockline">🔒 나만 보는 개인 일정 · 이 휴대폰에만 저장</div>':''}</div>
     <button class="iconbtn" data-close aria-label="닫기">✕</button></div>
   ${status?`<div class="notice">${h(status)}${o.note?' · '+h(o.note):''}</div>`:''}
@@ -927,6 +938,7 @@ function detailHtml(s){
     ${items.map((it,i)=>`<label class="check ${ck[it]?'done':''}"><input type="checkbox" id="chk-${i}" data-chk="${h(it)}" ${ck[it]?'checked':''}><span>${h(it)}</span></label>`).join('')}<p class="hint" style="margin:6px 0 0">체크는 이 휴대폰에만 저장돼요.</p></section>`:''}
   ${(e.duties||[]).length?`<section class="sec"><h3>${IC.hand}당번</h3>${e.duties.map(d=>{const c=childName();return `<div class="duty ${c&&d.who.includes(c)?'mine':''}"><span class="role">${ICON[d.role]||'⭐'} ${h(d.role)}</span><div style="min-width:0"><span class="who">${h(d.who)}</span>${d.memo?`<small>${h(d.memo)}</small>`:''}</div></div>`}).join('')}</section>`:''}
   ${e.notes?`<section class="sec"><h3>${IC.note}공지 · 메모</h3>${notesHtml(e.notes)}</section>`:''}
+  ${personal&&isWeekly(e)?`<section class="sec"><h3>${IC.edit}반복 일정 <span class="sec-sub">${h(wkLabel(e))}${e.until?' · '+h(md(e.date))+'~'+h(md(e.until)):''}</span></h3><div class="actions" style="margin-top:0">${ex?`<button class="btn wide" id="pUnskip" data-id="${h(e.id)}" data-orig="${o.orig}">이 날 다시 넣기</button>`:`<button class="btn wide" id="pSkip" data-id="${h(e.id)}" data-orig="${o.orig}">${h(md(o.orig))} 이 날만 빼기</button>`}</div></section>`:''}
   ${manage&&isWeekly(e)?`<section class="sec"><h3>${IC.edit}이 날 수업만 바꾸기 <span class="sec-sub">${h(fmtDate(o.orig))}</span></h3><div class="actions" style="margin-top:0">
       ${ex?`<button class="btn wide" id="occReset" data-id="${h(e.id)}" data-orig="${o.orig}">원래대로 되돌리기</button>`:`<button class="btn" id="occCancel" data-id="${h(e.id)}" data-orig="${o.orig}">이 날 휴강</button><button class="btn" id="occMove" data-id="${h(e.id)}" data-orig="${o.orig}">날짜·시간 변경</button>`}
     </div></section>`:''}
@@ -953,13 +965,15 @@ function formHtml(s){
   ${s.editing||cls?'':`<div class="paste"><p><b>카톡 공지 붙여넣기</b> · 코치님 공지를 그대로 붙여넣으면 장소, 시간, 준비물, 당번을 채워드려요.</p>
     <textarea id="f-paste" placeholder="<낫소컵 유소년 축구 대회>&#10;✅장소: ...&#10;✅일자: 26. 10. 11(일)&#10;✅집결시간: am8:30 ..."></textarea>
     <button class="btn sm primary" id="doParse" type="button" style="margin-top:6px">자동 채우기</button></div>`}
+  ${s.editing?'':copyPicker('f',EV.filter(x=>x.type!=='off'&&canSee(x)))}
   <form id="evForm" autocomplete="off">
     <div class="field"><span class="lbl">종류</span><div class="types">${TEAM_TYPES.map(tr).join('')}</div></div>
     <div class="field"><span class="lbl">대상 그룹 · 고른 그룹의 선수와 부모님에게만 보여요</span><div class="gpick">${visibleGroups().map(g=>`<label><input type="checkbox" name="f-g" id="f-g-${h(g.id)}" value="${h(g.id)}" ${(e.groupIds||[]).includes(g.id)?'checked':''}><span>${h(g.name)}</span></label>`).join('')||'<span class="hint">그룹이 없으면 전체 팀 일정으로 저장돼요. 팀 탭에서 그룹을 만들 수 있어요</span>'}</div></div>
     <p class="hint" style="margin:6px 0 0">${cls?'정규 수업은 매주 같은 요일에 반복돼요. 특정 날만 휴강하거나 옮길 때는 달력에서 그 날 수업을 눌러 바꿔주세요.':e.type==='off'?'전체 휴강일에는 그 날의 정규 수업이 모두 쉬는 것으로 표시돼요.':'대회·행사는 지정한 날짜에 한 번 잡혀요.'}</p>
     <div class="field"><label for="f-title">제목</label><input id="f-title" required value="${h(e.title)}" placeholder="${cls?'예: 유치부 정규 수업':'예: 낫소컵 유소년 축구대회'}"></div>
-    <div class="row"><div class="field"><label for="f-date">${cls?'첫 수업 날짜 (이 요일로 반복)':'날짜'}</label><input id="f-date" type="date" required value="${h(e.date)}"></div>
-      ${cls?`<div class="field"><label for="f-until">반복 종료일 (선택)</label><input id="f-until" type="date" value="${h(e.until)}"></div>`:`<div class="field"><label for="f-gather">집결</label><input id="f-gather" type="time" value="${h(e.gather)}"></div>`}</div>
+    <div class="row"><div class="field" id="f-datebox" ${isWeekly(e)?'hidden':''}><label for="f-date">날짜</label><input id="f-date" type="date" value="${h(e.date)}"></div>
+      ${cls?'':`<div class="field"><label for="f-gather">집결</label><input id="f-gather" type="time" value="${h(e.gather)}"></div>`}</div>
+    ${e.type==='off'?'':repeatHtml('f',e)}
     <div class="row"><div class="field"><label for="f-start">시작</label><input id="f-start" type="time" value="${h(e.start)}"></div>
       <div class="field"><label for="f-end">종료</label><input id="f-end" type="time" value="${h(e.end)}"></div></div>
     <div class="field"><label for="f-place">장소</label><input id="f-place" value="${h(e.place)}"></div>
@@ -977,12 +991,35 @@ function formHtml(s){
     <button class="btn primary" type="submit" name="act" value="notify" style="width:100%;margin-top:8px" ${busy?'disabled':''}>저장하고 공지 보내기 (대상 그룹에 알림)</button>
   </form>`;
 }
+function repeatHtml(px,e){
+  const on=isWeekly(e);const ds=wkDows(e);
+  return `<div class="field"><label for="${px}-rep">반복</label><select id="${px}-rep" data-rep="${px}"><option value="" ${on?'':'selected'}>반복 안 함</option><option value="1" ${on&&(+e.every||1)===1?'selected':''}>매주</option><option value="2" ${on&&+e.every===2?'selected':''}>2주마다 (격주)</option><option value="3" ${on&&+e.every===3?'selected':''}>3주마다</option><option value="4" ${on&&+e.every===4?'selected':''}>4주마다</option></select></div>
+  <div class="rpt" ${on?'':'hidden'} id="${px}-rptbox">
+    <div class="field"><span class="lbl">요일 (여러 개 고를 수 있어요)</span><div class="gpick dpick">${DOW_ORDER.map(d=>`<label><input type="checkbox" name="${px}-dow" id="${px}-dow-${d}" value="${d}" ${ds.includes(d)?'checked':''}><span>${DOW[d]}</span></label>`).join('')}</div></div>
+    <div class="row2c"><div class="field"><label for="${px}-from">시작일</label><input id="${px}-from" type="date" value="${h(e.date)}"></div><div class="field"><label for="${px}-until">종료일</label><input id="${px}-until" type="date" value="${h(e.until||'')}"></div></div>
+    <p class="hint" style="margin:6px 0 0">예: 10/1~10/31 매주 화요일 → 그 기간의 화요일마다 일정이 생겨요. 종료일을 비우면 계속 반복돼요.</p>
+  </div>`;
+}
+function readRepeat(px,base){
+  const r=val(px+'-rep');if(r===null)return {};
+  if(!r)return {repeat:'',dows:[],every:1,until:''};
+  const ds=[...document.querySelectorAll(`input[name="${px}-dow"]:checked`)].map(x=>+x.value);
+  const from=val(px+'-from')||base;
+  return {repeat:'weekly',dows:ds.length?ds:[dow(from)],every:+r,until:val(px+'-until')||'',date:from};
+}
+function copyPicker(px,list){
+  if(!list.length)return '';
+  const seen=new Set();const items=list.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).filter(e=>{const k=e.title;if(seen.has(k))return false;seen.add(k);return true}).slice(0,20);
+  return `<div class="copyp"><label for="${px}-copy">이전 일정 불러오기</label><select id="${px}-copy" data-copyfrom="${px}"><option value="">선택하면 제목·시간·장소 등을 채워요</option>${items.map(e=>`<option value="${h(e.id)}">${h(e.title)} · ${h(md(e.date))}${isWeekly(e)?' · '+h(wkLabel(e)):''}</option>`).join('')}</select></div>`;
+}
 function pformHtml(s){
   const e=s.draft;
   return `<div class="sheet-head"><div><h2>${s.editing?'개인 일정 수정':'새 개인 일정'}</h2><div class="lockline">🔒 이 휴대폰에만 저장돼서 나만 봐요</div></div><button class="iconbtn" data-close aria-label="닫기">✕</button></div>
+  ${s.editing?'':copyPicker('p',PERSONAL)}
   <form id="pForm" autocomplete="off">
     <div class="field"><label for="p-title">제목</label><input id="p-title" required value="${h(e.title)}" placeholder="예: 개인 레슨, 병원"></div>
-    <div class="field"><label for="p-date">날짜</label><input id="p-date" type="date" required value="${h(e.date)}"></div>
+    <div class="field" id="p-datebox" ${isWeekly(e)?'hidden':''}><label for="p-date">날짜</label><input id="p-date" type="date" value="${h(e.date)}"></div>
+    ${repeatHtml('p',e)}
     <div class="row2c"><div class="field"><label for="p-start">시작</label><input id="p-start" type="time" value="${h(e.start)}"></div><div class="field"><label for="p-end">종료</label><input id="p-end" type="time" value="${h(e.end)}"></div></div>
     <div class="field"><label for="p-place">장소</label><input id="p-place" value="${h(e.place)}"></div>
     <div class="field"><label for="p-items">챙길 것 (쉼표로 구분)</label><input id="p-items" value="${h((e.items||[]).join(', '))}"></div>
@@ -1081,8 +1118,7 @@ function readForm(){
   const gb=document.querySelectorAll('input[name="f-g"]');f.groupIds=gb.length?[...gb].filter(x=>x.checked).map(x=>x.value):(d.groupIds||[]);
   const ks=document.querySelector('input[name="f-shirt"]:checked'),kk=document.querySelector('input[name="f-sock"]:checked');
   f.kitShirt=ks?ks.value:(d.kitShirt||'');f.kitSock=kk?kk.value:(d.kitSock||'');
-  f.repeat=type==='class'?'weekly':'';
-  if(type!=='class')f.until='';
+  Object.assign(f,type==='off'?{repeat:'',dows:[],every:1,until:''}:readRepeat('f',f.date));
   if(type==='class'){f.gather=f.gather||'';}
   return f;
 }
@@ -1115,6 +1151,8 @@ document.addEventListener('click',async ev=>{
   if(t.id==='delYes'){const e=findEv(t.dataset.id);V.sheet=null;
     if(e.type==='personal'){PERSONAL=PERSONAL.filter(x=>x.id!==e.id);savePersonal();render();toast('개인 일정을 삭제했어요');return}
     run(()=>dbDel('events',e.id),'삭제했어요');return}
+  if(t.id==='pSkip'||t.id==='pUnskip'){const e=PERSONAL.find(x=>x.id===t.dataset.id);if(!e)return;e.exceptions=Object.assign({},e.exceptions||{});
+    if(t.id==='pSkip')e.exceptions[t.dataset.orig]={status:'cancel'};else delete e.exceptions[t.dataset.orig];savePersonal();render();toast(t.id==='pSkip'?md(t.dataset.orig)+' 일정을 뺐어요':'다시 넣었어요');return}
   if(t.id==='occCancel'){const e=findEv(t.dataset.id);const ex=Object.assign({},e.exceptions||{});ex[t.dataset.orig]={status:'cancel',note:''};
     const ne=Object.assign({},e,{exceptions:ex});run(()=>dbSet('events',e.id,ne),md(t.dataset.orig)+' 수업을 휴강으로 바꿨어요');return}
   if(t.id==='occMove'){V.sheet={kind:'move',id:t.dataset.id,orig:t.dataset.orig};render();return}
@@ -1224,6 +1262,13 @@ document.addEventListener('change',ev=>{
     if(t.value==='class'&&!V.sheet.draft.place){V.sheet.draft.place='수지위너스 구장';V.sheet.draft.addr=TEAM.addr}
     if(t.value==='off'&&(!V.sheet.draft.title||V.sheet.draft.title==='정규 수업'))V.sheet.draft.title='전체 휴강';
     render();return}
+  if(t.dataset&&t.dataset.rep){const px=t.dataset.rep;const on=!!t.value;const b=document.getElementById(px+'-rptbox');if(b)b.hidden=!on;const db=document.getElementById(px+'-datebox');if(db)db.hidden=on;
+    if(on){const any=document.querySelector(`input[name="${px}-dow"]:checked`);const d0=val(px+'-date')||val(px+'-from');if(!any&&d0){const c=document.getElementById(px+'-dow-'+dow(d0));if(c)c.checked=true}if(d0&&!val(px+'-from'))document.getElementById(px+'-from').value=d0}
+    else{const fr=val(px+'-from');if(fr&&document.getElementById(px+'-date'))document.getElementById(px+'-date').value=fr}return}
+  if(t.dataset&&t.dataset.copyfrom){const px=t.dataset.copyfrom;const src=(px==='p'?PERSONAL:EV).find(x=>x.id===t.value);if(!src)return;
+    const keep={id:'',date:V.sheet.draft.date,exceptions:{}};const c=Object.assign(JSON.parse(JSON.stringify(src)),keep);(c.matches||[]).forEach(m=>m.score='');
+    if(isWeekly(src)){c.date=src.date;c.until=src.until||''}
+    V.sheet.draft=c;render();toast('“'+src.title+'” 내용을 불러왔어요. 날짜를 확인하고 저장해 주세요');return}
   if(t.dataset&&t.dataset.mark){
     if(!canManage()||!ME.id)return;
     const cur=RV.find(x=>x.id===ME.id)||{};const marks=JSON.parse(JSON.stringify(cur.marks||{}));const k=t.dataset.key,pid=t.dataset.mark;
@@ -1242,6 +1287,7 @@ document.addEventListener('submit',ev=>{
   if(id0==='evForm'){
     if(!canManage()){toast('팀 일정은 감독·코치만 등록할 수 있어요');return}
     const f=readForm();if(!f.title||!f.date){toast('제목과 날짜를 넣어주세요');return}
+    if(f.until&&f.until<f.date){toast('종료일이 시작일보다 빨라요');return}
     if(visibleGroups().length&&!f.groupIds.length){toast('대상 그룹을 하나 이상 골라주세요');return}
     const d=V.sheet.draft;const editing=V.sheet.editing&&d.id;const id=editing?d.id:newId('e');
     const doc=Object.assign({},editing?findEv(id):{},f,{exceptions:editing?(findEv(id).exceptions||{}):{},updatedAt:new Date().toISOString(),updatedBy:ME.id||''});
@@ -1250,10 +1296,11 @@ document.addEventListener('submit',ev=>{
     if(act==='notify') run(async()=>{await dbSet('events',id,doc);await sendNotice(Object.assign({},doc,{id}),f.date,f.date,editing?'update':'new')},'저장하고 '+groupsLabel(f.groupIds)+'에 공지를 보냈어요');
     else run(()=>dbSet('events',id,doc),'저장했어요. 공지는 보내지 않았어요');return}
   if(id0==='pForm'){
-    const d=V.sheet.draft;const f={id:d.id||newId('p'),type:'personal',title:val('p-title'),date:val('p-date'),start:val('p-start'),end:val('p-end'),place:val('p-place'),items:val('p-items').split(',').map(x=>x.trim()).filter(Boolean),notes:document.getElementById('p-notes').value,repeat:''};
+    const d=V.sheet.draft;const f=Object.assign({id:d.id||newId('p'),type:'personal',title:val('p-title'),date:val('p-date'),start:val('p-start'),end:val('p-end'),place:val('p-place'),items:val('p-items').split(',').map(x=>x.trim()).filter(Boolean),notes:document.getElementById('p-notes').value,repeat:'',exceptions:d.exceptions||{}},readRepeat('p',val('p-date')));
     if(!f.title||!f.date){toast('제목과 날짜를 넣어주세요');return}
+    if(f.until&&f.until<f.date){toast('종료일이 시작일보다 빨라요');return}
     const i=PERSONAL.findIndex(x=>x.id===f.id);if(i>=0)PERSONAL[i]=f;else PERSONAL.push(f);savePersonal();
-    const nd=pd(f.date);V.y=nd.getFullYear();V.m=nd.getMonth();V.sel=f.date;V.sheet={kind:'detail',id:f.id,date:f.date,orig:f.date};render();toast('개인 일정을 저장했어요 (나만 보기)');return}
+    const nd=pd(f.date);V.y=nd.getFullYear();V.m=nd.getMonth();V.sel=f.date;V.sheet={kind:'detail',id:f.id,date:f.date,orig:f.date};render();toast(isWeekly(f)?wkLabel(f)+' 반복 일정을 저장했어요 (나만 보기)':'개인 일정을 저장했어요 (나만 보기)');return}
   if(id0==='moveForm'){
     const s=V.sheet;const e=findEv(s.id);const ex=Object.assign({},e.exceptions||{});
     const toDate=val('mv-date');if(!toDate){toast('바뀐 날짜를 넣어주세요');return}
