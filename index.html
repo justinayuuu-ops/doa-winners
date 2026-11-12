@@ -336,8 +336,8 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day.ev-class{background:#CFE3FC}
 .day.ev-match{background:#FBD3D9}
 .day.ev-personal{background:#E4D7FC}
-/* 휴강: 회색 빗금 칸 + 흐린 숫자 → 수업 날(파랑)과 확실히 다르게 */
-.day.ev-gray{background:repeating-linear-gradient(135deg,#DADFE5 0 3px,#F1F3F6 3px 7px)}
+/* 휴강: 회색 단색 칸 + 흐린 숫자 + 휴강 배지 → 수업 날(파랑)과 확실히 다르게 */
+.day.ev-gray{background:#E4E7EB}
 .day.ev-gray .n i{color:#8A94A0}
 .day.ev-gray .emo{opacity:.85}
 .day .n{width:25px;height:23px;border-radius:8px;font-size:14px;line-height:14px}
@@ -348,8 +348,8 @@ header.top{border-bottom:1px solid var(--line);margin-bottom:10px}
 .day.today .n i{color:#FFFFFF!important}
 /* 선택한 날짜: 일정 색(파랑·빨강·보라·회색)과 겹치지 않는 위너스 라임 하이라이트 */
 .day.sel,.day.sel.ev-class,.day.sel.ev-match,.day.sel.ev-personal{background:#F1FF7F}
-/* 휴강 칸은 선택해도 비활성(회색) 그대로, 빗금만 한 톤 진하게 */
-.day.sel.ev-gray{background:repeating-linear-gradient(135deg,#C3CAD3 0 3px,#E1E5EA 3px 7px)}
+/* 휴강 칸은 선택해도 비활성(회색) 그대로, 회색만 한 톤 진하게 */
+.day.sel.ev-gray{background:#CDD2D9}
 .day .offb{display:block;font-style:normal;font-size:10px;line-height:1;padding:3px 5px 2px;margin-top:1px;border-radius:5px;background:#8A94A0;color:#FFFFFF}
 .legend .offb{font-size:10px;line-height:1;padding:3px 5px 2px;border-radius:5px;background:#8A94A0;color:#FFFFFF;display:block}
 .legend .lgst svg{display:block;width:16px;height:16px}
