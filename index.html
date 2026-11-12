@@ -15,9 +15,9 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
 <style>
 /* 글씨체: 주아 하나만 쓴다 (오늘도 도아 킥과 같은 설정). 주아에 없는 글자만 카카오 작은글씨가 대신 그린다. */
-/* 카카오체(카카오톡 '카카오 일반체'): 기기에 설치돼 있을 때만 사용. 글꼴 파일은 앱에 넣지 않음 → 없으면 주아체 */
-@font-face{font-family:"KakaoLocal";src:local("카카오 Regular"),local("KakaoRegular"),local("Kakao Regular"),local("카카오OTF Regular"),local("카카오 OTF Regular"),local("KakaoOTFRegular"),local("Kakao OTF Regular");font-weight:400;font-style:normal}
-@font-face{font-family:"KakaoLocal";src:local("카카오 Bold"),local("KakaoBold"),local("Kakao Bold"),local("카카오OTF Bold"),local("카카오 OTF Bold"),local("KakaoOTFBold"),local("Kakao OTF Bold");font-weight:700;font-style:normal}
+/* 카카오체(카카오톡 '카카오 일반체'): 사내 배포 폰트를 이 앱에만 사용. 설치된 기기는 로컬 글꼴, 그 외(휴대폰)는 앱에 넣은 woff2 */
+@font-face{font-family:"KakaoLocal";src:local("카카오 Regular"),local("KakaoRegular"),local("Kakao Regular"),local("카카오OTF Regular"),local("카카오 OTF Regular"),local("KakaoOTFRegular"),local("Kakao OTF Regular"),url("./KakaoRegular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"KakaoLocal";src:local("카카오 Bold"),local("KakaoBold"),local("Kakao Bold"),local("카카오OTF Bold"),local("카카오 OTF Bold"),local("KakaoOTFBold"),local("Kakao OTF Bold"),url("./KakaoBold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:"Jua";src:url("./Jua-Korean.woff2") format("woff2"),url("https://cdn.jsdelivr.net/npm/@fontsource/jua@5/files/jua-korean-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Regular.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Kakao Small Sans";src:url("./KakaoSmallSans-Bold.woff2") format("woff2"),url("https://cdn.jsdelivr.net/gh/fonts-archive/KakaoSmallSans/KakaoSmallSans-Bold.woff2") format("woff2");font-weight:600 700;font-style:normal;font-display:swap}
